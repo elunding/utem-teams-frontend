@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+  <div id="app">
     <nav class="navbar navbar-expand navbar-dark bg-dark">
       <router-link to="/" class="navbar-brand">bezKoder</router-link>
       <div class="navbar-nav mr-auto">
@@ -20,6 +20,6 @@
 
 <script>
 export default {
-  name: 'App'
-}
+  name: "app"
+};
 </script>
