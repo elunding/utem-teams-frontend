@@ -7,6 +7,12 @@ export default new Router({
     mode: 'history',
     routes: [
         {
+            path: '/login',
+            name: 'login',
+            component: () => import ('') // component route
+        },
+        /*
+        {
             path: '/',
             alias: '/projects',
             name: 'projects',
@@ -42,5 +48,6 @@ export default new Router({
             name: 'tasks-details',
             component: () => import ('') // component route
         }
+        */
     ]
 });
