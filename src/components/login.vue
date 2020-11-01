@@ -1,55 +1,67 @@
 <template>
-  <div>
-    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-      <b-form-group
-        id="input-group-1"
-        label="Email"
-        label-for="input-1"
-        description="Correo Institucional"
-      >
-        <b-form-input
-          id="input-1"
-          v-model="form.email"
-          type="email"
-          required
-          placeholder="Ingrese su email"
-        ></b-form-input>
-      </b-form-group>
+    <div class="row justify-content-center mt-5">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="vue-template">
+                        <form action @submit.prevent="login">
+                            <h3>Bienvenido</h3>
 
-      <b-form-group id="input-group-2" label="Contraseña" label-for="input-2">
-        <b-form-input
-          id="input-2"
-          v-model="form.password"
-          required
-          placeholder="Ingrese su contraseña"
-        ></b-form-input>
-      </b-form-group>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input v-model="email" type="email" class="form-control form-control-lg" />
+                            </div>
 
-      <b-button type="submit" variant="primary">Iniciar Sesión</b-button>
-    </b-form>
-    <b-card class="mt-3" header="Form Data Result">
-      <pre class="m-0">{{ form }}</pre>
-    </b-card>
-  </div>
+                            <div class="form-group">
+                                <label>Contraseña</label>
+                                <input v-model="password" type="password" class="form-control form-control-lg" />
+                            </div>
+
+                            <button type="submit" class="btn btn-dark btn-lg btn-block" value="Login">Iniciar Sesión</button>
+
+                            <p class="forgot-password text-right mt-2 mb-4">
+                                <router-link to="/forgot-password">Olvidaste tu contraseña?</router-link>
+                            </p>
+                            <p v-if="error" class="error"> Contraseña o email erróneos </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
-  export default {
-    name: 'login',
-    data() {
-      return {
-        form: {
-          email: '',
-          password: ''
+    import UserAuthService from '../api/authentication.service'
+
+    export default {
+        name: 'Login',
+        data() {
+            return {
+                email: "",
+                password: "",
+                error: false
+            }
         },
-        show: true
-      }
-    },
-    methods: {
-      onSubmit(evt) {
-        evt.preventDefault()
-        alert(JSON.stringify(this.form))
-      }
-    }
-  }
+        methods: {
+            async login() {
+                try {
+                    console.log("calling UserAuthService with " + this.email + " and " + this.password);
+                    await UserAuthService.login(this.email, this.password);
+                    this.$router.push('/');
+                } catch (error) {
+                    console.log('error: ', error);
+                    this.error = true;
+                }
+            }
+        }
+    };
 </script>
+
+<style scoped>
+    .error {
+        color: #ff3f00;
+    }
+
+
+</style>

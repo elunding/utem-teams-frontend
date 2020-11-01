@@ -8,7 +8,7 @@ const httpClient = axios.create({
     }
 });
 
-const getAuthToken = () => sessionStorage.getItem('token');
+const getAuthToken = () => localStorage.getItem('token');
 
 const authTokenInterceptor = (config) => {
     config.headers['Authorization'] = 'Bearer ' + getAuthToken();
