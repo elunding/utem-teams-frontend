@@ -1,22 +1,20 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand navbar-dark bg-dark">
-      <router-link to="/" class="navbar-brand">Utem Team Work</router-link>
-      <div class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <router-link to="/tutorials" class="nav-link">Mis Proyectos</router-link>
-        </li>
-      </div>
-    </nav>
+    <nav-bar v-if="this.$router.currentRoute.name !== 'login'"></nav-bar>
 
     <div class="container mt-3">
-      <router-view />
+      <router-view/>
     </div>
   </div>
 </template>
 
 <script>
+import NavBar from './components/NavBar.vue';
+
 export default {
-  name: "app"
+  name: "app",
+  components: {
+    'nav-bar': NavBar,
+  }
 };
 </script>
