@@ -58,7 +58,7 @@ export default {
 
       createProject(data)
         .then(response => {
-          this.tutorial.id = response.data.id;
+          this.description.id = response.data.id;
           console.log(response.data);
           this.submitted = true;
         })

@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import Login from './components/Login.vue'
+import AddProject from './components/AddProject.vue'
 
 
 Vue.use(Router);
@@ -14,6 +15,11 @@ export default new Router({
             name: 'login',
             component: Login
         },
+        {
+            path: '/projects/new',
+            name: 'projects-new',
+            component: AddProject
+        }
         /*
         {
             path: '/',
@@ -22,7 +28,7 @@ export default new Router({
             component: () => import ('') // component route
         },
         {
-            path: '/new',
+            path: '/projects/new',
             // alias: '/projects',
             name: 'projects-new',
             component: () => import ('') // component route
