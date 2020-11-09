@@ -14,9 +14,10 @@
       </div>
 
       <div class="form-group">
-        <label for="description">Descripcion</label>
-        <input
+        <label for="description">Descripción</label>
+        <textarea
           class="form-control"
+          rows="4"
           id="description"
           required
           v-model="project.description"
