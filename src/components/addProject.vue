@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import createProject from "../api/projects.api.js";
+import {createProject} from "../api/projects.api.js";
 
 export default {
   name: "add-project",
@@ -55,7 +55,8 @@ export default {
         name: this.project.name,
         description: this.project.description
       };
-
+      console.log("data: ", data);
+      console.log("calling createProject...")
       createProject(data)
         .then(response => {
           this.description.id = response.data.id;
@@ -67,9 +68,9 @@ export default {
         });
     },
     
-    newTutorial() {
+    newProject() {
       this.submitted = false;
-      this.tutorial = {};
+      this.project = {};
     }
   }
 };
