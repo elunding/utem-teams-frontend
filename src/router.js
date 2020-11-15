@@ -3,6 +3,7 @@ import Router from 'vue-router';
 
 import Login from './components/Login.vue'
 import AddProject from './components/AddProject.vue'
+import ListProject from './components/ListProject.vue'
 
 
 Vue.use(Router);
@@ -19,14 +20,14 @@ export default new Router({
             path: '/projects/new',
             name: 'projects-new',
             component: AddProject
-        }
-        /*
+        },
         {
             path: '/',
             alias: '/projects',
             name: 'projects',
-            component: () => import ('') // component route
-        },
+            component: ListProject
+        }
+        /*
         {
             path: '/projects/new',
             // alias: '/projects',
