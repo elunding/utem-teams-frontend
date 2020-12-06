@@ -1,26 +1,24 @@
 <template>
   <div class="col-md-12">
-    <h3> Proyectos </h3>
+    <h3> Tareas </h3>
     <br/>
     <div class="my-grid">
-      <div class="jumbotron" v-if="!projects || !projects.length">  
-        <h3 class="display-6">No hay proyectos existentes</h3>
+      <div class="jumbotron" v-if="!tasks || !tasks.length">  
+        <h3 class="display-6">No hay tareas existentes</h3>
         <p class="lead"></p>
         <hr class="my-4">
         <p></p>
-        <a class="btn btn-primary btn-lg" href="/projects/new" role="button">Crear Proyecto</a>
+        <a class="btn btn-primary btn-lg" href="/tasks/new" role="button">Crear Proyecto</a>
       </div>
-      <b-card-group v-else v-for="(project, index) in projects" :key="index">
+      <b-card-group v-else v-for="(task, index) in tasks" :key="index">
           <b-card 
-            class="proj-card"
-            :title="project.name"
+            class="task-card"
+            :title="task.name"
             style="max-width: 23rem; margin-bottom: 20px;"
           >
-            <b-card-text class="proj-description">
-              {{ project.description }}
+            <b-card-text class="task-description">
+              {{ task.description }}
             </b-card-text>
-            <b-button class="details-btn" id="proj-details-btn" variant="primary">Ver detalles</b-button>
-            <a v-bind:href="`/projects/${project.id}/tasks`" class="btn btn-primary btn tasks-btn" role="button">Ver Tareas</a>
           </b-card>
         </b-card-group>
       </div>
@@ -28,21 +26,21 @@
 </template>
 
 <script>
-import { getProjects } from "../api/projects.api.js";
+import { getTasks } from "../api/projects.api.js";
 
 export default {
-  name: "list-project",
+  name: "list-task",
   data() {
     return {
-      projects: []
+      tasks: []
     };
   },
   methods: {
-    retrieveProjects() {
+    retrieveTasks() {
       console.log("calling getProjects...")
-      getProjects()
+      getTasks()
         .then(response => {
-          this.projects = response.data;
+          this.tasks = response.data;
           console.log(response.data);
         })
         .catch(e => {
@@ -52,8 +50,8 @@ export default {
   },
   mounted() {
       console.log("mounted!")
-      console.log("calling retrieveProjects...")
-      this.retrieveProjects();
+      console.log("calling retrieveTasks...")
+      this.retrieveTasks();
     }
 };
 </script>
@@ -63,7 +61,7 @@ export default {
     float: right;
   }
 
-  .proj-description {
+  .task-description {
     margin-bottom: 40px;
   }
 

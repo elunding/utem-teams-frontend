@@ -1,38 +1,44 @@
 <template>
-  <div class="submit-form">
-    <div v-if="!submitted">
-      <div class="form-group">
-        <label for="name">Nombre Proyecto</label>
-        <input
-          type="text"
-          class="form-control"
-          id="name"
-          required
+ <div class="submit-form">
+   
+    <b-form v-if="!submitted">
+      <b-form-group
+        id="input-group-1"
+        label="Nombre proyecto"
+        label-for="project-name"
+      >
+        <b-form-input
+          id="project-name"
           v-model="project.name"
-          name="name"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="description">Descripción</label>
-        <textarea
-          class="form-control"
-          rows="4"
-          id="description"
+          type="text"
           required
+          placeholder="Ingrese Nombre"
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group id="input-group-2" label="Descripción" label-for="description">
+        <b-form-textarea
+          id="description"
+          rows="4"
           v-model="project.description"
-          name="description"
-        />
-      </div>
+          required
+          placeholder="Inserte una descripción"
+        ></b-form-textarea>
+      </b-form-group>
 
-      <button @click="saveProject" class="btn btn-success">Guardar</button>
-    </div>
+      <b-form-group id="input-group-3" label="Integrantes (opcional)" label-for="members-dropdown">
+        <b-form-select
+          id="members-dropdown"
+          :options="members"
+          required
+        ></b-form-select>
+      </b-form-group>
 
-    <div v-else>
-      <h4>Proyecto creado!</h4>
-      <button class="btn btn-success" @click="newProject">Añadir</button>
-    </div>
+      <b-button type="submit" variant="primary">Crear Proyecto</b-button>
+    </b-form>
   </div>
+
+
 </template>
 
 <script>
@@ -45,7 +51,8 @@ export default {
       project: {
         id: null,
         name: "",
-        description: ""
+        description: "",
+        members: []
       },
       submitted: false
     };
@@ -54,7 +61,8 @@ export default {
     saveProject() {
       let data = {
         name: this.project.name,
-        description: this.project.description
+        description: this.project.description,
+        members: this.project.members
       };
       console.log("data: ", data);
       console.log("calling createProject...")
@@ -77,9 +85,14 @@ export default {
 };
 </script>
 
-<style>
-.submit-form {
-  max-width: 300px;
-  margin: auto;
-}
+<style scoped>
+  .submit-form {
+    margin-top: 90px;
+    /*width: 800px;*/
+    /*margin: auto;*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 </style>

@@ -4,6 +4,8 @@ import Router from 'vue-router';
 import Login from './components/Login.vue'
 import AddProject from './components/AddProject.vue'
 import ListProject from './components/ListProject.vue'
+import ListTask from './components/ListTask.vue'
+// import ProjectDetail from './components/ProjectDetail.vue'
 
 
 Vue.use(Router);
@@ -26,21 +28,18 @@ export default new Router({
             alias: '/projects',
             name: 'projects',
             component: ListProject
-        }
-        /*
-        {
-            path: '/projects/new',
-            // alias: '/projects',
-            name: 'projects-new',
-            component: () => import ('') // component route
         },
         {
+            path: '/projects/:id/tasks',
+            name: 'tasks',
+            component: ListTask
+        },
+        /*{
             path: '/projects/:id',
-            // alias: '/projects',
             name: 'projects-details',
-            component: () => import ('') // component route
-        },
-        {
+            component: ProjectDetail
+        },*/
+        /*{
             path: '/projects/:id/tasks',
             // alias: '/tasks',
             name: 'tasks',

@@ -1,17 +1,31 @@
 <template>
-    <nav class="navbar navbar-expand navbar-dark bg-dark">
-      <router-link to="/" class="navbar-brand">Utem Team Work</router-link>
-      <div class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <router-link to="/projects" class="nav-link">Mis Proyectos</router-link>
-        </li>
-      </div>
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-            <a v-on:click.self="logout" class="nav-link">Cerrar Sesión</a>
-        </li>
-      </ul>
-    </nav>
+    <b-navbar toggleable="lg" type="dark" variant="dark">
+    <router-link to="/" class="navbar-brand">Team Work</router-link>
+
+    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+    <b-collapse id="nav-collapse" is-nav>
+      <b-navbar-nav>
+        <b-nav-item-dropdown text="Proyectos" right>
+          <b-dropdown-item href="/projects">Ver Proyectos</b-dropdown-item>
+          <b-dropdown-item href="/projects/new">Crear Proyecto</b-dropdown-item>
+        </b-nav-item-dropdown>
+
+      </b-navbar-nav>
+
+      <!-- Right aligned nav items -->
+      <b-navbar-nav class="ml-auto">
+
+        <b-nav-item-dropdown right>
+          <!-- Using 'button-content' slot -->
+          <template #button-content>
+            <em>User</em>
+          </template>
+          <b-dropdown-item v-on:click.self="logout" class="nav-link">Cerrar Sesión</b-dropdown-item>
+        </b-nav-item-dropdown>
+      </b-navbar-nav>
+    </b-collapse>
+  </b-navbar>
 </template>
 
 <script>
