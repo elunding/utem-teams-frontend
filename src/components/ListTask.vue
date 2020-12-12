@@ -8,7 +8,7 @@
         <p class="lead"></p>
         <hr class="my-4">
         <p></p>
-        <a class="btn btn-primary btn-lg" href="/tasks/new" role="button">Crear Proyecto</a>
+        <router-link to="tasks/new" tag="a" class="btn btn-primary btn-lg">Crear Tarea</router-link>
       </div>
       <b-card-group v-else v-for="(task, index) in tasks" :key="index">
           <b-card 
