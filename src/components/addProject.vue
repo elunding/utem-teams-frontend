@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { createProject } from "../api/projects.api.js";
+import { createProject } from "../api/api.service.js";
 
 export default {
   name: "add-project",

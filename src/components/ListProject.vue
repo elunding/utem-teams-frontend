@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { getProjects } from "../api/projects.api.js";
+import { getProjects } from "../api/api.service.js";
 
 export default {
   name: "list-project",
@@ -42,7 +42,7 @@ export default {
       console.log("calling getProjects...")
       getProjects()
         .then(response => {
-          this.projects = response.data;
+          this.projects = response.data.data;
           console.log(response.data);
         })
         .catch(e => {

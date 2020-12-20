@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { getProjectDetails } from "../api/projects.api.js";
+import { getProjectDetails } from "../api/api.service.js";
 
 export default {
   name: "list-project",

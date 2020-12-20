@@ -8,6 +8,7 @@ const getProjectDetails = (project_id) => httpClient.get(`${PROJECTS_ENDPOINT}${
 const createProject = (projectData) => httpClient.post(`${PROJECTS_ENDPOINT}new/`, projectData);
 const getTasks = (project_id) => httpClient.get(`${PROJECTS_ENDPOINT}${project_id}/tasks/`);
 const createTask = (taskData, project_id) => httpClient.post(`${PROJECTS_ENDPOINT}${project_id}/tasks/new/`, taskData);
+const getMembersList = (project_id) => httpClient.get(`${PROJECTS_ENDPOINT}${project_id}/members/`);
 
 export {
     getProjects,
@@ -15,4 +16,5 @@ export {
     createProject,
     getTasks,
     createTask,
+    getMembersList,
 }

@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { getTasks } from "../api/projects.api.js";
+import { getTasks } from "../api/api.service.js";
 
 export default {
   name: "list-task",
@@ -37,11 +37,13 @@ export default {
   },
   methods: {
     retrieveTasks() {
-      console.log("calling getProjects...")
-      getTasks()
+      let projectId = this.$route.params.id;
+      console.log("projectId ", projectId);
+      console.log("calling getProjects...");
+      getTasks(projectId)
         .then(response => {
-          this.tasks = response.data;
-          console.log(response.data);
+          this.tasks = response.data.data;
+          console.log(response.data.data);
         })
         .catch(e => {
           console.log(e);
