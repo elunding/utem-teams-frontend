@@ -29,13 +29,13 @@
       <b-form-group id="input-group-3" label="Encargado" label-for="assignee-dropdown">
         <b-form-select
           id="assignee-dropdown"
-          v-model="selected"
+          v-model="task.assignee"
           :options="assigneeList"
         >
         </b-form-select>
       </b-form-group>
 
-      <b-button type="submit" variant="primary">Crear Tarea</b-button>
+      <b-button @click="saveTask" variant="primary">Crear Tarea</b-button>
     </b-form>
   </div>
 
@@ -86,7 +86,9 @@ export default {
       let data = {
         name: this.task.name,
         description: this.task.description,
-        assignee: this.task.assignee
+        assignee: {
+          uuid: this.task.assignee
+        }
       };
       let projectId = this.$route.params.id;
       console.log("data: ", data);
@@ -95,7 +97,7 @@ export default {
       createTask(data, projectId)
         .then(response => {
           this.description.name = response.data.name;
-          console.log(response.data);
+          console.log("Task created!, data: ", response.data);
           this.submitted = true;
         })
         .catch(e => {

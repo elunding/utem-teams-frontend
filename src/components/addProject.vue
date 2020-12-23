@@ -34,7 +34,7 @@
         ></b-form-select>
       </b-form-group>
 
-      <b-button type="submit" variant="primary">Crear Proyecto</b-button>
+      <b-button @click="saveProject" variant="primary">Crear Proyecto</b-button>
     </b-form>
   </div>
 
@@ -69,7 +69,7 @@ export default {
       createProject(data)
         .then(response => {
           this.description.id = response.data.id;
-          console.log(response.data);
+          console.log("Project created!, data: ", response.data);
           this.submitted = true;
         })
         .catch(e => {
