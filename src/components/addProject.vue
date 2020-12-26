@@ -29,7 +29,8 @@
       <b-form-group id="input-group-3" label="Integrantes (opcional)" label-for="members-dropdown">
         <b-form-select
           id="members-dropdown"
-          :options="members"
+          v-model="project.members"
+          :options="userList"
           required
         ></b-form-select>
       </b-form-group>
@@ -42,7 +43,7 @@
 </template>
 
 <script>
-import { createProject } from "../api/api.service.js";
+import { getUserList, createProject } from "../api/api.service.js";
 
 export default {
   name: "add-project",
@@ -54,8 +55,30 @@ export default {
         description: "",
         members: []
       },
+      userList: [],
+      selected: null,
       submitted: false
     };
+  },
+  mounted() {
+    let items = []
+    getUserList()
+      .then(response => {
+        console.log("users data: ", response.data.data)
+        for (const data of response.data.data) {
+          const item = {
+            'value': data.uuid,
+            'text': data.full_name,
+          };
+          items.push(item);
+        }
+        this.userList = items;
+        console.log("Items: ", items);
+        console.log("userList: ", this.userList);
+      })
+      .catch(e => {
+        console.log(e)
+      })
   },
   methods: {
     saveProject() {
