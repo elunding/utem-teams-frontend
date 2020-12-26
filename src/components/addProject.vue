@@ -27,12 +27,18 @@
       </b-form-group>
 
       <b-form-group id="input-group-3" label="Integrantes (opcional)" label-for="members-dropdown">
-        <b-form-select
-          id="members-dropdown"
+        <multiselect
           v-model="project.members"
           :options="userList"
-          required
-        ></b-form-select>
+          :multiple="true"
+          :close-on-select="false"
+          :clear-on-select="false"
+          :preserve-search="true"
+          placeholder="Selecciona miembros"
+          label="full_name"
+          track-by="full_name"
+        >
+        </multiselect>
       </b-form-group>
 
       <b-button @click="saveProject" variant="primary">Crear Proyecto</b-button>
@@ -44,6 +50,7 @@
 
 <script>
 import { getUserList, createProject } from "../api/api.service.js";
+import Multiselect from 'vue-multiselect';
 
 export default {
   name: "add-project",
@@ -56,10 +63,11 @@ export default {
         members: []
       },
       userList: [],
-      selected: null,
+      value: [],
       submitted: false
     };
   },
+  components: { Multiselect },
   mounted() {
     let items = []
     getUserList()
@@ -67,8 +75,8 @@ export default {
         console.log("users data: ", response.data.data)
         for (const data of response.data.data) {
           const item = {
-            'value': data.uuid,
-            'text': data.full_name,
+            'uuid': data.uuid,
+            'full_name': data.full_name,
           };
           items.push(item);
         }
@@ -85,9 +93,10 @@ export default {
       let data = {
         name: this.project.name,
         description: this.project.description,
-        members: this.project.members
+        project_members: this.project.members.map(({ uuid }) => ({ uuid: uuid }))
       };
       console.log("data: ", data);
+      console.log("members: ", data.project_members)
       console.log("calling createProject...")
       createProject(data)
         .then(response => {
@@ -99,7 +108,6 @@ export default {
           console.log(e);
         });
     },
-    
     newProject() {
       this.submitted = false;
       this.project = {};
@@ -108,6 +116,7 @@ export default {
 };
 </script>
 
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
   .submit-form {
     margin-top: 90px;
