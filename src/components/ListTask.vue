@@ -32,10 +32,11 @@
         <div class="col-sm-3">
           <div class="p-3 alert alert-secondary card-group-cls">
             <h4>Pendientes</h4>
-            <draggable class="card-group" v-for="(task, index) in todoTasks" :key="index">
+            <draggable class="drag-area" :list="todoTasks" group="tasks">
               <b-card 
                 class="task-card"
                 :title="task.name"
+                v-for="(task, index) in todoTasks" :key="index"
                 style="max-width: 23rem; margin-bottom: 20px;"
               >
               <b-card-text class="task-description">
@@ -49,10 +50,11 @@
         <div class="col-sm-3">
           <div class="p-3 alert alert-primary card-group-cls">
             <h4>En curso</h4>
-            <draggable class="card-group" v-for="(task, index) in inProgressTasks" :key="index">
+            <draggable class="drag-area" :list="inProgressTasks" group="tasks">
               <b-card 
                 class="task-card"
                 :title="task.name"
+                v-for="(task, index) in inProgressTasks" :key="index"
                 style="max-width: 23rem; margin-bottom: 20px;"
               >
               <b-card-text class="task-description">
@@ -83,10 +85,11 @@
         <div class="col-sm-3">
           <div class="p-3 alert alert-success card-group-cls">
             <h4>Finalizadas</h4>
-            <draggable class="card-group" v-for="(task, index) in doneTasks" :key="index">
+            <draggable class="drag-area" :list="doneTasks" group="tasks">
               <b-card 
                 class="task-card"
                 :title="task.name"
+                v-for="(task, index) in doneTasks" :key="index"
                 style="max-width: 23rem; margin-bottom: 20px;"
               >
               <b-card-text class="task-description">
