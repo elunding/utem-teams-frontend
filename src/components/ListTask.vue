@@ -12,27 +12,10 @@
       </div>
 
       <div class="row mt-3" v-else>
-        <!--<div class="col-sm-3">
-          <div class="p-2 alert alert-secondary">
-            <h4>Por hacer</h4>
-            <b-card-group  v-for="(task, index) in todoTasks" :key="index">
-              <b-card 
-                class="task-card"
-                :title="task.name"
-                style="max-width: 23rem; margin-bottom: 20px;"
-              >
-              <b-card-text class="task-description">
-                {{ task.description }}
-              </b-card-text>
-              </b-card>
-            </b-card-group>
-          </div>
-        </div>-->
-
         <div class="col-sm-3">
           <div class="p-3 alert alert-secondary card-group-cls">
             <h4>Pendientes</h4>
-            <draggable class="drag-area" :list="todoTasks" group="tasks">
+            <draggable id="TD" class="drag-area" :list="todoTasks" group="tasks" :move="changeStatus">
               <b-card 
                 class="task-card"
                 :title="task.name"
@@ -50,7 +33,7 @@
         <div class="col-sm-3">
           <div class="p-3 alert alert-primary card-group-cls">
             <h4>En curso</h4>
-            <draggable class="drag-area" :list="inProgressTasks" group="tasks">
+            <draggable id="IP" class="drag-area" :list="inProgressTasks" group="tasks" :move="changeStatus">
               <b-card 
                 class="task-card"
                 :title="task.name"
@@ -65,27 +48,10 @@
           </div>
         </div>
 
-        <!--<div class="col-sm-3">
-          <div class="p-2 alert alert-success">
-            <h4>Finalizadas</h4>
-            <b-card-group v-for="(task, index) in todoTasks" :key="index">
-              <b-card 
-                class="task-card"
-                :title="task.name"
-                style="max-width: 23rem; margin-bottom: 20px;"
-              >
-              <b-card-text class="task-description">
-                {{ task.description }}
-              </b-card-text>
-              </b-card>
-            </b-card-group>
-          </div>
-        </div>-->
-
         <div class="col-sm-3">
           <div class="p-3 alert alert-success card-group-cls">
             <h4>Finalizadas</h4>
-            <draggable class="drag-area" :list="doneTasks" group="tasks">
+            <draggable id="DN" class="drag-area" :list="doneTasks" group="tasks" :move="changeStatus">
               <b-card 
                 class="task-card"
                 :title="task.name"
@@ -99,18 +65,13 @@
             </draggable>
           </div>
         </div>
-
-
       </div>
-
-      
-      
     </div>
   </div>
 </template>
 
 <script>
-import { getTasks } from "../api/api.service.js";
+import { getTasks, changeTaskStatus } from "../api/api.service.js";
 import draggable from "vuedraggable";
 
 export default {
@@ -123,13 +84,13 @@ export default {
       todoTasks: [],
       inProgressTasks: [],
       doneTasks: [],
-      tasksExists: false
+      tasksExists: false,
+      projectId: this.$route.params.id
     };
   },
   methods: {
     retrieveTasks() {
-      let projectId = this.$route.params.id;
-      getTasks(projectId)
+      getTasks(this.projectId)
         .then(response => {
           this.todoTasks = response.data.data.todo_tasks;
           this.inProgressTasks = response.data.data.in_progress_tasks;
@@ -150,6 +111,23 @@ export default {
         console.log("condition satisfied...");
         this.tasksExists = true;
       }
+    },
+    changeStatus(ev) {
+      const taskId = ev.draggedContext.element.id;
+      console.log("taskId: ", taskId);
+      const newStatus = ev.to.id;
+      const taskData = {
+        "status": newStatus
+      };
+      console.log("newStatus: ", newStatus);
+      changeTaskStatus(this.projectId, taskId, taskData)
+        .then(response => {
+          console.log("task status changed!");
+          console.log("response: ", response);
+        })
+        .catch(e => {
+          console.log(e)
+        });
     }
   },
   mounted() {
@@ -172,18 +150,5 @@ export default {
   .card-group-cls {
     min-height: 300px
   }
-
-  /*.my-grid {
-    display: grid;*/
-    /*justify-items: center;*/
-    /* 280px is the minimum a column can get, you might need to adjust it based on your needs. */
-    /*grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    grid-gap: 1.5rem;
-  }
-
-  .my-grid > * {
-    width: 100%;
-    max-width: 20rem;
-  }*/
 
 </style>
