@@ -26,6 +26,9 @@
               <b-card-text class="task-description">
                 {{ task.description }}
               </b-card-text>
+              <b-card-text class="task-assignee">
+                Encargado: {{ task.assignee.full_name }}
+              </b-card-text>
               <div class="priority-cont">
                 <b-dropdown class="md-2">  
                   <template #button-content>
@@ -55,6 +58,9 @@
               <b-card-text class="task-description">
                 {{ task.description }}
               </b-card-text>
+              <b-card-text class="task-assignee">
+                Encargado: {{ task.assignee.full_name }}
+              </b-card-text>
               <div class="priority-cont">
                 <b-dropdown class="md-2">  
                   <template #button-content>
@@ -83,6 +89,9 @@
               >
               <b-card-text class="task-description">
                 {{ task.description }}
+              </b-card-text>
+              <b-card-text class="task-assignee">
+                Encargado: {{ task.assignee.full_name }}
               </b-card-text>
               <div class="priority-cont">
                 <b-dropdown class="md-2">  
