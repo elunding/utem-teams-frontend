@@ -11,10 +11,11 @@
         <router-link to="tasks/new" tag="a" class="btn btn-primary btn-lg">Crear Tarea</router-link>
       </div>
 
-      <div class="row mt-3" v-else>
-        <div class="col-sm-3">
+      <div class="row lt-3" v-else>
+        <div class="col-sm-4">
           <div class="p-3 alert alert-secondary card-group-cls">
             <h4>Pendientes</h4>
+            <br>
             <draggable id="TD" class="drag-area" :list="todoTasks" group="tasks" :move="changeStatus">
               <b-card 
                 class="task-card"
@@ -25,14 +26,25 @@
               <b-card-text class="task-description">
                 {{ task.description }}
               </b-card-text>
+              <div class="priority-cont">
+                <b-dropdown class="md-2">  
+                  <template #button-content>
+                    {{ translatePriority(task.priority_name) }}
+                  </template>
+                  <b-dropdown-item>Baja</b-dropdown-item>
+                  <b-dropdown-item>Media</b-dropdown-item>
+                  <b-dropdown-item>Alta</b-dropdown-item>
+                </b-dropdown>
+              </div>
               </b-card>
             </draggable>
           </div>
         </div>
 
-        <div class="col-sm-3">
+        <div class="col-sm-4">
           <div class="p-3 alert alert-primary card-group-cls">
             <h4>En curso</h4>
+            <br>
             <draggable id="IP" class="drag-area" :list="inProgressTasks" group="tasks" :move="changeStatus">
               <b-card 
                 class="task-card"
@@ -43,14 +55,25 @@
               <b-card-text class="task-description">
                 {{ task.description }}
               </b-card-text>
+              <div class="priority-cont">
+                <b-dropdown class="md-2">  
+                  <template #button-content>
+                    {{ translatePriority(task.priority_name) }}
+                  </template>
+                  <b-dropdown-item>Baja</b-dropdown-item>
+                  <b-dropdown-item>Media</b-dropdown-item>
+                  <b-dropdown-item>Alta</b-dropdown-item>
+                </b-dropdown>
+              </div>
               </b-card>
             </draggable>
           </div>
         </div>
 
-        <div class="col-sm-3">
+        <div class="col-sm-4">
           <div class="p-3 alert alert-success card-group-cls">
             <h4>Finalizadas</h4>
+            <br>
             <draggable id="DN" class="drag-area" :list="doneTasks" group="tasks" :move="changeStatus">
               <b-card 
                 class="task-card"
@@ -61,6 +84,16 @@
               <b-card-text class="task-description">
                 {{ task.description }}
               </b-card-text>
+              <div class="priority-cont">
+                <b-dropdown class="md-2">  
+                  <template #button-content>
+                    {{ translatePriority(task.priority_name) }}
+                  </template>
+                  <b-dropdown-item>Baja</b-dropdown-item>
+                  <b-dropdown-item>Media</b-dropdown-item>
+                  <b-dropdown-item>Alta</b-dropdown-item>
+                </b-dropdown>
+              </div>
               </b-card>
             </draggable>
           </div>
@@ -128,6 +161,16 @@ export default {
         .catch(e => {
           console.log(e)
         });
+    },
+    translatePriority(priority) {
+      const translations = {
+        'LOW': 'Baja',
+        'MEDIUM': 'Media',
+        'HIGH': 'Alta',
+      };
+      console.log("priority: ", priority);
+      console.log("translation: ", translations[priority]);
+      return translations[priority];
     }
   },
   mounted() {
@@ -148,7 +191,12 @@ export default {
   }
 
   .card-group-cls {
-    min-height: 300px
+    min-height: 75vh;
+  }
+
+  .priority-cont {
+    display: flex;
+    float: right;
   }
 
 </style>
