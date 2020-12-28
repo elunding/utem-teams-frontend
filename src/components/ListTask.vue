@@ -29,10 +29,14 @@
               <b-card-text class="task-assignee">
                 Encargado: {{ task.assignee.full_name }}
               </b-card-text>
-              <div class="priority-cont">
-                <b-dropdown class="md-2">  
+              <div class="options-cont">
+                <b-button class="edit-btn" variant="primary">
+                  <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
+                </b-button>
+                <b-dropdown class="md-2 prio-dpdwn">  
                   <template #button-content>
-                    {{ translatePriority(task.priority_name) }}
+                    <b-icon icon="exclamation-triangle" aria-hidden="true"></b-icon> 
+                     {{ translatePriority(task.priority_name) }}
                   </template>
                   <b-dropdown-item @click="changePriority(1, task.id)">Baja</b-dropdown-item>
                   <b-dropdown-item @click="changePriority(2, task.id)">Media</b-dropdown-item>
@@ -61,10 +65,14 @@
               <b-card-text class="task-assignee">
                 Encargado: {{ task.assignee.full_name }}
               </b-card-text>
-              <div class="priority-cont">
-                <b-dropdown class="md-2">  
+              <div class="options-cont">
+                <b-button class="edit-btn" variant="primary">
+                  <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
+                </b-button>
+                <b-dropdown class="md-2 prio-dpdwn">  
                   <template #button-content>
-                    {{ translatePriority(task.priority_name) }}
+                    <b-icon icon="exclamation-triangle" aria-hidden="true"></b-icon> 
+                     {{ translatePriority(task.priority_name) }}
                   </template>
                   <b-dropdown-item @click="changePriority(1, task.id)">Baja</b-dropdown-item>
                   <b-dropdown-item @click="changePriority(2, task.id)">Media</b-dropdown-item>
@@ -93,10 +101,14 @@
               <b-card-text class="task-assignee">
                 Encargado: {{ task.assignee.full_name }}
               </b-card-text>
-              <div class="priority-cont">
-                <b-dropdown class="md-2">  
+              <div class="options-cont">
+                <b-button class="edit-btn" variant="primary">
+                  <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
+                </b-button>
+                <b-dropdown class="md-2 prio-dpdwn">  
                   <template #button-content>
-                    {{ translatePriority(task.priority_name) }}
+                    <b-icon icon="exclamation-triangle" aria-hidden="true"></b-icon> 
+                     {{ translatePriority(task.priority_name) }}
                   </template>
                   <b-dropdown-item @click="changePriority(1, task.id)">Baja</b-dropdown-item>
                   <b-dropdown-item @click="changePriority(2, task.id)">Media</b-dropdown-item>
@@ -218,9 +230,12 @@ export default {
     min-height: 75vh;
   }
 
-  .priority-cont {
+  .options-cont {
     display: flex;
-    float: right;
+  }
+
+  .edit-btn {
+    margin-right: auto;
   }
 
 </style>
