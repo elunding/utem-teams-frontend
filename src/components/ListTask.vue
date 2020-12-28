@@ -31,9 +31,9 @@
                   <template #button-content>
                     {{ translatePriority(task.priority_name) }}
                   </template>
-                  <b-dropdown-item>Baja</b-dropdown-item>
-                  <b-dropdown-item>Media</b-dropdown-item>
-                  <b-dropdown-item>Alta</b-dropdown-item>
+                  <b-dropdown-item @click="changePriority(1, task.id)">Baja</b-dropdown-item>
+                  <b-dropdown-item @click="changePriority(2, task.id)">Media</b-dropdown-item>
+                  <b-dropdown-item @click="changePriority(3, task.id)">Alta</b-dropdown-item>
                 </b-dropdown>
               </div>
               </b-card>
@@ -60,9 +60,9 @@
                   <template #button-content>
                     {{ translatePriority(task.priority_name) }}
                   </template>
-                  <b-dropdown-item>Baja</b-dropdown-item>
-                  <b-dropdown-item>Media</b-dropdown-item>
-                  <b-dropdown-item>Alta</b-dropdown-item>
+                  <b-dropdown-item @click="changePriority(1, task.id)">Baja</b-dropdown-item>
+                  <b-dropdown-item @click="changePriority(2, task.id)">Media</b-dropdown-item>
+                  <b-dropdown-item @click="changePriority(3, task.id)">Alta</b-dropdown-item>
                 </b-dropdown>
               </div>
               </b-card>
@@ -89,9 +89,9 @@
                   <template #button-content>
                     {{ translatePriority(task.priority_name) }}
                   </template>
-                  <b-dropdown-item>Baja</b-dropdown-item>
-                  <b-dropdown-item>Media</b-dropdown-item>
-                  <b-dropdown-item>Alta</b-dropdown-item>
+                  <b-dropdown-item @click="changePriority(1, task.id)">Baja</b-dropdown-item>
+                  <b-dropdown-item @click="changePriority(2, task.id)">Media</b-dropdown-item>
+                  <b-dropdown-item @click="changePriority(3, task.id)">Alta</b-dropdown-item>
                 </b-dropdown>
               </div>
               </b-card>
@@ -104,7 +104,7 @@
 </template>
 
 <script>
-import { getTasks, changeTaskStatus } from "../api/api.service.js";
+import { getTasks, changeTaskStatus, changeTaskPriority } from "../api/api.service.js";
 import draggable from "vuedraggable";
 
 export default {
@@ -156,6 +156,21 @@ export default {
       changeTaskStatus(this.projectId, taskId, taskData)
         .then(response => {
           console.log("task status changed!");
+          console.log("response: ", response);
+        })
+        .catch(e => {
+          console.log(e)
+        });
+    },
+    changePriority(priority, taskId) {
+      console.log("taskId: ", taskId);
+      const taskPriorityData = {
+        "priority": priority
+      };
+      console.log("newPriority: ", priority);
+      changeTaskPriority(this.projectId, taskId, taskPriorityData)
+        .then(response => {
+          console.log("task priority changed!");
           console.log("response: ", response);
         })
         .catch(e => {
