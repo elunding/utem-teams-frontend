@@ -1,7 +1,13 @@
 <template>
- <div class="submit-form">
-   
-    <b-form v-if="!submitted">
+  <b-modal 
+    id="add-task-modal"
+    ref="modal"
+    title="Añadir Tarea"
+    @show="resetModal"
+    @hidden="resetModal"
+    @ok="handleOk"
+  >
+    <form ref="form" @submit.stop.prevent="handleSubmit" v-if="!submitted">
       <b-form-group
         id="input-group-1"
         label="Nombre Tarea"
@@ -36,17 +42,15 @@
       </b-form-group>
 
       <b-button @click="saveTask" variant="primary">Crear Tarea</b-button>
-    </b-form>
-  </div>
-
-
+    </form>
+  </b-modal>
 </template>
 
 <script>
 import { createTask, getMembersList } from "../api/api.service.js";
 
 export default {
-  name: "add-task",
+  name: "AddTask",
   data() {
     return {
       task: {

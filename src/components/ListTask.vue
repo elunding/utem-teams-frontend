@@ -6,19 +6,7 @@
       <b-button v-b-modal.add-task-modal variant="primary">
         <b-icon icon="plus-circle" aria-hidden="true"></b-icon> Añadir tarea
       </b-button>
-      <b-modal 
-        id="add-task-modal"
-        ref="modal"
-        title="Añadir Tarea"
-        @show="resetModal"
-        @hidden="resetModal"
-        @ok="handleOk"
-      >
-        <form ref="form" @submit.stop.prevent="handleSubmit">
-          
-        
-        </form>
-      </b-modal>
+      <AddTask />
     </div>
     <br/>
     <div class="my-grid">
@@ -146,11 +134,13 @@
 <script>
 import { getTasks, changeTaskStatus, changeTaskPriority } from "../api/api.service.js";
 import draggable from "vuedraggable";
+import AddTask from "./AddTask"
 
 export default {
   name: "list-task",
   components: {
-    draggable
+    draggable,
+    AddTask
   },
   data() {
     return {
