@@ -1,6 +1,25 @@
 <template>
   <div class="col-md-12">
-    <h3> Tareas </h3>
+    <h3> Tareas: {{ projectName }} </h3>
+    <br/>
+    <div class="button-area">
+      <b-button v-b-modal.add-task-modal variant="primary">
+        <b-icon icon="plus-circle" aria-hidden="true"></b-icon> Añadir tarea
+      </b-button>
+      <b-modal 
+        id="add-task-modal"
+        ref="modal"
+        title="Añadir Tarea"
+        @show="resetModal"
+        @hidden="resetModal"
+        @ok="handleOk"
+      >
+        <form ref="form" @submit.stop.prevent="handleSubmit">
+          
+        
+        </form>
+      </b-modal>
+    </div>
     <br/>
     <div class="my-grid">
       <div class="jumbotron" v-if="!tasksExists">  
@@ -139,7 +158,8 @@ export default {
       inProgressTasks: [],
       doneTasks: [],
       tasksExists: false,
-      projectId: this.$route.params.id
+      projectId: this.$route.params.id,
+      projectName: '',
     };
   },
   methods: {
@@ -154,6 +174,7 @@ export default {
             this.inProgressTasks,
             this.doneTasks
           ));
+          this.projectName = response.data.data.project_name;
           console.log(response.data.data);
         })
         .catch(e => {
