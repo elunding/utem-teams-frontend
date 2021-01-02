@@ -1,12 +1,10 @@
 <template>
   <b-modal 
-    id="add-task-modal"
+    :id="`${compId}-${taskId}`"
     ref="modal"
-    title="Añadir Tarea"
-    ok-title="Crear Tarea"
+    :title="title"
+    :ok-title="buttonTitle"
     ok-only
-    @show="resetModal"
-    @hidden="resetModal"
     @ok="handleOk"
   >
     <form ref="form" @submit.stop.prevent="handleSubmit" v-if="!submitted">
@@ -38,7 +36,7 @@
         <b-form-select
           id="assignee-dropdown"
           v-model="task.assignee"
-          :options="assigneeList"
+          :options="assignees"
         >
         </b-form-select>
       </b-form-group>
@@ -47,10 +45,32 @@
 </template>
 
 <script>
-import { createTask, getMembersList } from "../api/api.service.js";
+import { createTask } from "../api/api.service.js";
 
 export default {
   name: "AddTask",
+  props: {
+    title: {
+      type: String,
+      required: true
+    },
+    compId: {
+      type: String,
+      required: true
+    },
+    buttonTitle: {
+      type: String,
+      required: true
+    },
+    taskId: {
+      type: Number,
+      required: true
+    },
+    assignees: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
       task: {
@@ -59,32 +79,16 @@ export default {
         description: "",
         assignee: "",
       },
-      assigneeList: [],
       selected: null,
       submitted: false,
       formValidity: null
     };
   },
   mounted() {
-    let projectId = this.$route.params.id;
-    let items = []
-    getMembersList(projectId)
-      .then(response => {
-        console.log("assginee data: ", response.data.data)
-        for (const data of response.data.data) {
-          const item = {
-            'value': data.uuid,
-            'text': data.full_name,
-          };
-          items.push(item);
-        }
-        this.assigneeList = items;
-        console.log("Items: ", items);
-        console.log("assigneeList: ", this.assigneeList);
-      })
-      .catch(e => {
-        console.log(e)
-      })
+    /*let projectId = this.$route.params.id;
+    let items = []*/
+    console.log("assignees: ", this.assignees)
+    // this.assigneeList = this.assignees
   },
   methods: {
     validateForm() {

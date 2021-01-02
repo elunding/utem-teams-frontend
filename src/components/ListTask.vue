@@ -3,10 +3,10 @@
     <h3> Tareas: {{ projectName }} </h3>
     <br/>
     <div class="button-area">
-      <b-button v-b-modal.add-task-modal variant="primary">
+      <b-button v-b-modal.add-task-modal-0 variant="primary">
         <b-icon icon="plus-circle" aria-hidden="true"></b-icon> Añadir tarea
       </b-button>
-      <AddTask />
+      <AddTask compId="add-task-modal" :taskId=0 v-if="assigneeList" :assignees=assigneeList title="Crear Tarea" buttonTitle="Añadir Tarea"/>
     </div>
     <br/>
     <div class="my-grid">
@@ -30,16 +30,19 @@
                 v-for="(task, index) in todoTasks" :key="index"
                 style="max-width: 23rem; margin-bottom: 20px;"
               >
-              <b-card-text class="task-description">
+              <!--<b-card-text class="task-description">
                 {{ task.description }}
-              </b-card-text>
+              </b-card-text>-->
               <b-card-text class="task-assignee">
                 Encargado: {{ task.assignee.full_name }}
               </b-card-text>
               <div class="options-cont">
-                <b-button class="edit-btn" variant="primary">
+                <b-button v-b-modal.`edit-task-modal-${task.id}` class="edit-btn" variant="primary">
                   <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
                 </b-button>
+                <!--<AddTask compId="`edit-task-modal-${task.id}`" title="Editar Tarea" buttonTitle="Guardar Cambios"/>-->
+                <!--<AddTask compId="edit-task-modal" projId="`${task.id}`" title="Editar Tarea" buttonTitle="Guardar Cambios"/>-->
+                <AddTask compId="edit-task-modal" :taskId="task.id" :assignees=assigneeList v-if="assigneeList" title="Editar Tarea" buttonTitle="Guardar Cambios"/>
                 <b-dropdown class="md-2 prio-dpdwn">  
                   <template #button-content>
                     <b-icon icon="exclamation-triangle" aria-hidden="true"></b-icon> 
@@ -66,16 +69,19 @@
                 v-for="(task, index) in inProgressTasks" :key="index"
                 style="max-width: 23rem; margin-bottom: 20px;"
               >
-              <b-card-text class="task-description">
+              <!--<b-card-text class="task-description">
                 {{ task.description }}
-              </b-card-text>
+              </b-card-text>-->
               <b-card-text class="task-assignee">
                 Encargado: {{ task.assignee.full_name }}
               </b-card-text>
               <div class="options-cont">
-                <b-button class="edit-btn" variant="primary">
+                <b-button v-b-modal.`edit-task-modal-${task.id}` class="edit-btn" variant="primary">
                   <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
                 </b-button>
+                <!--<AddTask compId="`edit-task-modal-${task.id}`" title="Editar Tarea" buttonTitle="Guardar Cambios"/>-->
+                <!--<AddTask compId="edit-task-modal" projId="`${task.id}`" title="Editar Tarea" buttonTitle="Guardar Cambios"/>-->
+                <AddTask compId="edit-task-modal" :taskId="task.id" :assignees=assigneeList v-if="assigneeList" title="Editar Tarea" buttonTitle="Guardar Cambios"/>
                 <b-dropdown class="md-2 prio-dpdwn">  
                   <template #button-content>
                     <b-icon icon="exclamation-triangle" aria-hidden="true"></b-icon> 
@@ -102,16 +108,19 @@
                 v-for="(task, index) in doneTasks" :key="index"
                 style="max-width: 23rem; margin-bottom: 20px;"
               >
-              <b-card-text class="task-description">
+              <!--<b-card-text class="task-description">
                 {{ task.description }}
-              </b-card-text>
+              </b-card-text>-->
               <b-card-text class="task-assignee">
                 Encargado: {{ task.assignee.full_name }}
               </b-card-text>
               <div class="options-cont">
-                <b-button class="edit-btn" variant="primary">
+                <b-button v-b-modal.`edit-task-modal-${task.id}` class="edit-btn" variant="primary">
                   <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
                 </b-button>
+                <!--<AddTask compId="`edit-task-modal-${task.id}`" title="Editar Tarea" buttonTitle="Guardar Cambios"/>-->
+                <!--<AddTask compId="edit-task-modal" projId="`${task.id}`" title="Editar Tarea" buttonTitle="Guardar Cambios"/>-->
+                <AddTask compId="edit-task-modal" :taskId="task.id" :assignees=assigneeList v-if="assigneeList" title="Editar Tarea" buttonTitle="Guardar Cambios"/>
                 <b-dropdown class="md-2 prio-dpdwn">  
                   <template #button-content>
                     <b-icon icon="exclamation-triangle" aria-hidden="true"></b-icon> 
@@ -132,7 +141,7 @@
 </template>
 
 <script>
-import { getTasks, changeTaskStatus, changeTaskPriority } from "../api/api.service.js";
+import { getTasks, changeTaskStatus, changeTaskPriority, getMembersList } from "../api/api.service.js";
 import draggable from "vuedraggable";
 import AddTask from "./AddTask"
 
@@ -150,6 +159,7 @@ export default {
       tasksExists: false,
       projectId: this.$route.params.id,
       projectName: '',
+      assigneeList: []
     };
   },
   methods: {
@@ -170,6 +180,26 @@ export default {
         .catch(e => {
           console.log(e);
         });
+    },
+    getAssignees() {
+      let projectId = this.$route.params.id;
+      let items = []
+      getMembersList(projectId)
+        .then(response => {
+          console.log("assginee data: ", response.data.data)
+          for (const data of response.data.data) {
+            const item = {
+              'value': data.uuid,
+              'text': data.full_name,
+            }
+            items.push(item)
+          }
+          this.assigneeList = items
+          console.log("assigneeList: ", this.assigneeList)
+        })
+        .catch(e => {
+          console.log(e)
+        })
     },
     setTasksExists(todos, inProgress, done) {
       if ((todos && todos.length) || (inProgress && inProgress.length) || (done && done.length)) {  
@@ -215,15 +245,20 @@ export default {
         'MEDIUM': 'Media',
         'HIGH': 'Alta',
       };
-      console.log("priority: ", priority);
-      console.log("translation: ", translations[priority]);
+
       return translations[priority];
     }
   },
+  created() {
+    console.log("created!")
+    console.log("calling getAssignees...")
+    this.getAssignees()
+  },
   mounted() {
       console.log("mounted!")
-      console.log("calling retrieveTasks...");
-      this.retrieveTasks();
+      console.log("calling retrieveTasks...")
+      this.retrieveTasks()
+      // this.getAssignees()
   },
 };
 </script>
