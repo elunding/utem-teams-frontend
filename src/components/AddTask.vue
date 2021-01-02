@@ -3,6 +3,8 @@
     id="add-task-modal"
     ref="modal"
     title="Añadir Tarea"
+    ok-title="Crear Tarea"
+    ok-only
     @show="resetModal"
     @hidden="resetModal"
     @ok="handleOk"
@@ -40,8 +42,6 @@
         >
         </b-form-select>
       </b-form-group>
-
-      <b-button @click="saveTask" variant="primary">Crear Tarea</b-button>
     </form>
   </b-modal>
 </template>
@@ -61,7 +61,8 @@ export default {
       },
       assigneeList: [],
       selected: null,
-      submitted: false
+      submitted: false,
+      formValidity: null
     };
   },
   mounted() {
@@ -86,6 +87,25 @@ export default {
       })
   },
   methods: {
+    validateForm() {
+      const isValid = this.$refs.form.checkValidity()
+      this.formValidity = isValid
+      return isValid
+    },
+    handleOk(bvModalEvt) {
+      bvModalEvt.preventDefault()
+      this.handleSubmit()
+    },
+    handleSubmit() {
+      if (!this.validateForm()) {
+        return
+      }
+
+      this.saveTask()
+      this.$nextTick(() => {
+        this.$bvModal.hide('modal-prevent-closing')
+      })
+    },
     saveTask() {
       let data = {
         name: this.task.name,
