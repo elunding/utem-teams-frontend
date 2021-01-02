@@ -3,14 +3,14 @@
     <h3> Tareas: {{ projectName }} </h3>
     <br/>
     <div class="button-area">
-      <b-button v-b-modal.add-task-modal-0 variant="primary">
+      <b-button v-b-modal="`add-task-modal-${0}`" variant="primary">
         <b-icon icon="plus-circle" aria-hidden="true"></b-icon> Añadir tarea
       </b-button>
       <AddTask compId="add-task-modal" :taskId=0 v-if="assigneeList" :assignees=assigneeList title="Crear Tarea" buttonTitle="Añadir Tarea"/>
     </div>
     <br/>
     <div class="my-grid">
-      <div class="jumbotron" v-if="!tasksExists">  
+      <div class="jumbotron" v-if="!tasksExists">
         <h3 class="display-6">No hay tareas existentes</h3>
         <p class="lead"></p>
         <hr class="my-4">
@@ -37,12 +37,10 @@
                 Encargado: {{ task.assignee.full_name }}
               </b-card-text>
               <div class="options-cont">
-                <b-button v-b-modal.`edit-task-modal-${task.id}` class="edit-btn" variant="primary">
+                <b-button v-b-modal="`edit-task-modal-${task.id}`" class="edit-btn" variant="primary">
                   <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
                 </b-button>
-                <!--<AddTask compId="`edit-task-modal-${task.id}`" title="Editar Tarea" buttonTitle="Guardar Cambios"/>-->
-                <!--<AddTask compId="edit-task-modal" projId="`${task.id}`" title="Editar Tarea" buttonTitle="Guardar Cambios"/>-->
-                <AddTask compId="edit-task-modal" :taskId="task.id" :assignees=assigneeList v-if="assigneeList" title="Editar Tarea" buttonTitle="Guardar Cambios"/>
+                <AddTask compId="edit-task-modal" :taskId="task.id" v-if="assigneeList" :assignees=assigneeList title="Editar Tarea" buttonTitle="Guardar Cambios"/>
                 <b-dropdown class="md-2 prio-dpdwn">  
                   <template #button-content>
                     <b-icon icon="exclamation-triangle" aria-hidden="true"></b-icon> 
@@ -76,12 +74,10 @@
                 Encargado: {{ task.assignee.full_name }}
               </b-card-text>
               <div class="options-cont">
-                <b-button v-b-modal.`edit-task-modal-${task.id}` class="edit-btn" variant="primary">
+                <b-button v-b-modal="`edit-task-modal-${task.id}`" class="edit-btn" variant="primary">
                   <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
                 </b-button>
-                <!--<AddTask compId="`edit-task-modal-${task.id}`" title="Editar Tarea" buttonTitle="Guardar Cambios"/>-->
-                <!--<AddTask compId="edit-task-modal" projId="`${task.id}`" title="Editar Tarea" buttonTitle="Guardar Cambios"/>-->
-                <AddTask compId="edit-task-modal" :taskId="task.id" :assignees=assigneeList v-if="assigneeList" title="Editar Tarea" buttonTitle="Guardar Cambios"/>
+                <AddTask compId="edit-task-modal" :taskId="task.id" v-if="assigneeList" :assignees=assigneeList title="Editar Tarea" buttonTitle="Guardar Cambios"/>
                 <b-dropdown class="md-2 prio-dpdwn">  
                   <template #button-content>
                     <b-icon icon="exclamation-triangle" aria-hidden="true"></b-icon> 
@@ -115,12 +111,10 @@
                 Encargado: {{ task.assignee.full_name }}
               </b-card-text>
               <div class="options-cont">
-                <b-button v-b-modal.`edit-task-modal-${task.id}` class="edit-btn" variant="primary">
+                <b-button v-b-modal="`edit-task-modal-${task.id}`" class="edit-btn" variant="primary">
                   <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
                 </b-button>
-                <!--<AddTask compId="`edit-task-modal-${task.id}`" title="Editar Tarea" buttonTitle="Guardar Cambios"/>-->
-                <!--<AddTask compId="edit-task-modal" projId="`${task.id}`" title="Editar Tarea" buttonTitle="Guardar Cambios"/>-->
-                <AddTask compId="edit-task-modal" :taskId="task.id" :assignees=assigneeList v-if="assigneeList" title="Editar Tarea" buttonTitle="Guardar Cambios"/>
+                <AddTask compId="edit-task-modal" :taskId="task.id" v-if="assigneeList" :assignees=assigneeList title="Editar Tarea" buttonTitle="Guardar Cambios"/>
                 <b-dropdown class="md-2 prio-dpdwn">  
                   <template #button-content>
                     <b-icon icon="exclamation-triangle" aria-hidden="true"></b-icon> 
