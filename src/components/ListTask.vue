@@ -6,7 +6,7 @@
       <b-button v-b-modal="`add-task-modal-${0}`" variant="primary">
         <b-icon icon="plus-circle" aria-hidden="true"></b-icon> Añadir tarea
       </b-button>
-      <AddTask compId="add-task-modal" :taskId=0 v-if="assigneeList" :assignees=assigneeList v-on:reloadData="handleReload" />
+      <TaskModal compId="add-task-modal" :taskId=0 v-if="assigneeList" :assignees=assigneeList v-on:reloadData="handleReload" />
     </div>
     <br/>
     <div class="my-grid">
@@ -41,10 +41,11 @@
                 <b-button v-b-modal="`edit-task-modal-${task.id}`" class="edit-btn" size="sm" variant="primary">
                   <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
                 </b-button>
+                <TaskModal compId="edit-task-modal" :taskId="task.id" v-if="assigneeList" :assignees=assigneeList mode="patch" :taskObj=task title="Editar Tarea" buttonTitle="Guardar Cambios"/>
                 <b-button v-b-modal="`delete-task-modal-${task.id}`" class="delete-btn" size="sm" variant="danger">
                   <b-icon icon="trash" aria-hidden="true"></b-icon> Eliminar
                 </b-button>
-                <AddTask compId="delete-task-modal" :taskId="task.id" mode="delete" :taskObj=task title="Eliminar Tarea" buttonTitle="Eliminar"/>
+                <TaskModal compId="delete-task-modal" :taskId="task.id" mode="delete" :taskObj=task title="Eliminar Tarea" buttonTitle="Eliminar"/>
                 <b-dropdown size="sm" class="md-2 prio-dpdwn">  
                   <template #button-content>
                     <b-icon icon="exclamation-triangle" aria-hidden="true"></b-icon> 
@@ -82,10 +83,11 @@
                 <b-button v-b-modal="`edit-task-modal-${task.id}`" size="sm" class="edit-btn" variant="primary">
                   <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
                 </b-button>
+                <TaskModal compId="edit-task-modal" :taskId="task.id" v-if="assigneeList" :assignees=assigneeList mode="patch" :taskObj=task title="Editar Tarea" buttonTitle="Guardar Cambios"/>
                 <b-button v-b-modal="`delete-task-modal-${task.id}`" class="delete-btn" size="sm" variant="danger">
                   <b-icon icon="trash" aria-hidden="true"></b-icon> Eliminar
                 </b-button>
-                <AddTask compId="delete-task-modal" :taskId="task.id" mode="delete" :taskObj=task title="Eliminar Tarea" buttonTitle="Eliminar"/>
+                <TaskModal compId="delete-task-modal" :taskId="task.id" mode="delete" :taskObj=task title="Eliminar Tarea" buttonTitle="Eliminar"/>
                 <b-dropdown size="sm" class="md-2 prio-dpdwn">  
                   <template #button-content>
                     <b-icon icon="exclamation-triangle" aria-hidden="true"></b-icon> 
@@ -123,10 +125,11 @@
                 <b-button v-b-modal="`edit-task-modal-${task.id}`" size="sm" class="edit-btn" variant="primary">
                   <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
                 </b-button>
+                <TaskModal compId="edit-task-modal" :taskId="task.id" v-if="assigneeList" :assignees=assigneeList mode="patch" :taskObj=task title="Editar Tarea" buttonTitle="Guardar Cambios"/>
                 <b-button v-b-modal="`delete-task-modal-${task.id}`" class="delete-btn" size="sm" variant="danger">
                   <b-icon icon="trash" aria-hidden="true"></b-icon> Eliminar
                 </b-button>
-                <AddTask compId="delete-task-modal" :taskId="task.id" mode="delete" :taskObj=task title="Eliminar Tarea" buttonTitle="Eliminar"/>
+                <TaskModal compId="delete-task-modal" :taskId="task.id" mode="delete" :taskObj=task title="Eliminar Tarea" buttonTitle="Eliminar"/>
                 <b-dropdown size="sm" class="md-2 prio-dpdwn">  
                   <template #button-content>
                     <b-icon icon="exclamation-triangle" aria-hidden="true"></b-icon> 
@@ -149,13 +152,13 @@
 <script>
 import { getTasks, changeTaskStatus, changeTaskPriority, getMembersList } from "../api/api.service.js";
 import draggable from "vuedraggable";
-import AddTask from "./AddTask"
+import TaskModal from "./TaskModal"
 
 export default {
   name: "list-task",
   components: {
     draggable,
-    AddTask
+    TaskModal
   },
   data() {
     return {

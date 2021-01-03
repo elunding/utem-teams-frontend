@@ -5,7 +5,7 @@ import Login from './components/Login.vue'
 import AddProject from './components/AddProject.vue'
 import ListProject from './components/ListProject.vue'
 import ListTask from './components/ListTask.vue'
-import AddTask from './components/AddTask.vue'
+import TaskModal from './components/TaskModal.vue'
 // import ProjectDetail from './components/ProjectDetail.vue'
 
 
@@ -38,7 +38,7 @@ export default new Router({
         {
             path: '/projects/:id/tasks/new',
             name: 'tasks-new',
-            component: AddTask
+            component: TaskModal
         },
         /*{
             path: '/projects/:id',

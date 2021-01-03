@@ -67,7 +67,7 @@
         </b-form-select>-->
       </b-form-group>
     </form>
-    <h5> ¿Estás seguro de eliminar {{ taskObj.name }}? </h5>
+    <h5 v-else> ¿Estás seguro de eliminar {{ taskObj.name }}? </h5>
   </b-modal>
 </template>
 
@@ -75,7 +75,7 @@
 import { createTask, updateTask, deleteTask } from "../api/api.service.js";
 
 export default {
-  name: "AddTask",
+  name: "TaskModal",
   props: {
     title: {
       type: String,
