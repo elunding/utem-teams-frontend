@@ -14,6 +14,8 @@ const changeTaskStatus = (projectId, taskId, status) => httpClient.patch(`${PROJ
 const changeTaskPriority = (projectId, taskId, priority) => httpClient.patch(`${PROJECTS_ENDPOINT}${projectId}/tasks/${taskId}/`, priority);
 const updateTask = (projectId, taskId, data) => httpClient.patch(`${PROJECTS_ENDPOINT}${projectId}/tasks/${taskId}/`, data);
 const deleteTask = (projectId, taskId) => httpClient.delete(`${PROJECTS_ENDPOINT}${projectId}/tasks/${taskId}/`);
+const updateProject = (projectId, data) => httpClient.patch(`${PROJECTS_ENDPOINT}${projectId}/`, data);
+const deleteProject = (projectId) => httpClient.delete(`${PROJECTS_ENDPOINT}${projectId}/`);
 
 
 export {
@@ -28,4 +30,6 @@ export {
     changeTaskPriority,
     updateTask,
     deleteTask,
+    updateProject,
+    deleteProject
 }

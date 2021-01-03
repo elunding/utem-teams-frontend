@@ -33,9 +33,9 @@
         ></b-form-textarea>
       </b-form-group>
 
-      <b-form-group id="input-group-3" label="Integrantes (opcional)" label-for="members-dropdown">
+      <b-form-group id="input-group-3" label="Integrantes" label-for="members-dropdown">
         <multiselect
-          v-model="project.members"
+          v-model="project.project_members"
           :options="userList"
           :multiple="true"
           :close-on-select="false"
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { createProject } from "../api/api.service.js";
+import { createProject, updateProject, deleteProject } from "../api/api.service.js";
 import Multiselect from 'vue-multiselect';
 
 export default {
@@ -90,11 +90,11 @@ export default {
       required: false,
       default: 'post'
     },
-    preselectedMembers: {
+    /*preselectedMembers: {
       type: Array,
       required: false,
       default: () => []
-    }
+    }*/
   },
   data() {
     return {
@@ -102,9 +102,11 @@ export default {
         id: null,
         name: "",
         description: "",
-        members: []
+        // members: []
+        // members: [...this.preselectedMembers]
+        project_members: []
       },
-      value: [...this.preselectedMembers],
+      // value: [...this.preselectedMembers],
       formValidity: null,
       submitted: false
     };
@@ -133,11 +135,11 @@ export default {
       if (this.mode !== 'delete') {
         this.handleSubmit()
       } else {
-        this.handleTaskDeletion(this.taskId)
+        this.handleProjectDeletion(this.projectId)
       }
       
       this.$nextTick(() => {
-        this.$bvModal.hide(`${this.compId}-${this.taskId}`)
+        this.$bvModal.hide(`${this.compId}-${this.projectId}`)
         this.$emit('reloadData')
       })
     },
@@ -152,7 +154,7 @@ export default {
         this.saveProject()
       } else if (this.mode === 'patch') {
         console.log("in else if...")
-        this.updateProject(this.projectId)
+        this.editProject(this.projectId)
       }
       
     },
@@ -175,8 +177,30 @@ export default {
           console.log(e);
         });
     },
-    updateProject() {
-      
+    editProject(projectId) {
+      const updateData = {
+        name: this.project.name || '',
+        description: this.project.description || '',
+        project_members: this.project.project_members.map(({ uuid }) => ({ uuid: uuid })) || ''
+      };
+      updateProject(projectId, updateData)
+        .then(response => {
+          console.log("update response: ", response)
+          this.submitted = true
+        })
+        .catch(e => {
+          console.log("an error has occurred: ", e)
+        });
+    },
+    handleProjectDeletion(projectId) {
+      deleteProject(projectId)
+        .then(response => {
+          console.log("project deleted! ", projectId)
+          console.log("response: ", response)
+        })
+        .catch(e => {
+          console.log("An error has occurred while trying to delete the project", e)
+        })
     },
     newProject() {
       this.submitted = false;

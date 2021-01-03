@@ -22,16 +22,19 @@
             <b-card-text class="proj-description">
               {{ project.description }}
             </b-card-text>
-            <!--<b-button class="details-btn" id="proj-details-btn" variant="primary">Ver detalles</b-button>-->
-            <b-button v-b-modal="`edit-project-modal-${project.id}`" size="sm" class="edit-btn" variant="primary">
-              <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
-            </b-button>
-            <ProjectModal compId="edit-project-modal" :projectId="project.id" v-if="userList" :userList=userList mode="patch" :projObj=project title="Detalles Proyecto" buttonTitle="Guardar Cambios" :preselectedMembers=project.project_members  v-on:reloadData="handleReload"/>
-            <b-button v-b-modal="`delete-project-modal-${project.id}`" class="delete-btn" size="sm" variant="danger">
-              <b-icon icon="trash" aria-hidden="true"></b-icon> Eliminar
-            </b-button>
-            <ProjectModal compId="delete-project-modal" :projectId="project.id" mode="delete" :projObj=project title="Eliminar Proyecto" buttonTitle="Eliminar" v-on:reloadData="handleReload"/>
-            <a v-bind:href="`/projects/${project.id}/tasks`" class="btn btn-primary btn tasks-btn btn-sm" role="button">Ver Tareas</a>
+            <div class="options-cont">
+              <!--<b-button class="details-btn" id="proj-details-btn" variant="primary">Ver detalles</b-button>-->
+              <b-button v-b-modal="`edit-project-modal-${project.id}`" size="sm" class="edit-btn" variant="primary">
+                <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
+              </b-button>
+              <!--<ProjectModal compId="edit-project-modal" :projectId="project.id" v-if="userList" :userList=userList mode="patch" :projObj=project title="Detalles Proyecto" buttonTitle="Guardar Cambios" :preselectedMembers=project.project_members  v-on:reloadData="handleReload"/>-->
+              <ProjectModal compId="edit-project-modal" :projectId="project.id" v-if="userList" :userList=userList mode="patch" :projObj=project title="Detalles Proyecto" buttonTitle="Guardar Cambios" v-on:reloadData="handleReload"/>
+              <b-button v-b-modal="`delete-project-modal-${project.id}`" class="delete-btn" size="sm" variant="danger">
+                <b-icon icon="trash" aria-hidden="true"></b-icon> Eliminar
+              </b-button>
+              <ProjectModal compId="delete-project-modal" :projectId="project.id" mode="delete" :projObj=project title="Eliminar Proyecto" buttonTitle="Eliminar" v-on:reloadData="handleReload"/>
+              <a v-bind:href="`/projects/${project.id}/tasks`" class="btn btn-primary btn tasks-btn btn-sm" role="button">Ver Tareas</a>
+            </div> 
           </b-card>
         </b-card-group>
       </div>
@@ -105,6 +108,22 @@ export default {
 
   .proj-description {
     margin-bottom: 40px;
+  }
+
+  .edit-btn {
+    margin-right: auto;
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+
+  .delete-btn {
+    margin-right: auto;
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+
+  .options-cont {
+    display: flex;
   }
 
   /*.my-grid {
