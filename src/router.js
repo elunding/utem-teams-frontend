@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import Login from './components/Login.vue'
-import AddProject from './components/AddProject.vue'
+import ProjectModal from './components/ProjectModal.vue'
 import ListProject from './components/ListProject.vue'
 import ListTask from './components/ListTask.vue'
 import TaskModal from './components/TaskModal.vue'
@@ -22,7 +22,7 @@ export default new Router({
         {
             path: '/projects/new',
             name: 'projects-new',
-            component: AddProject
+            component: ProjectModal
         },
         {
             path: '/',

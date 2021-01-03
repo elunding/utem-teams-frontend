@@ -12,10 +12,6 @@
     <div class="my-grid">
       <div class="jumbotron" v-if="!tasksExists">
         <h3 class="display-6">No hay tareas existentes</h3>
-        <p class="lead"></p>
-        <hr class="my-4">
-        <p></p>
-        <router-link to="tasks/new" tag="a" class="btn btn-primary btn-lg">Crear Tarea</router-link>
       </div>
 
       <div class="row lt-3" v-else>

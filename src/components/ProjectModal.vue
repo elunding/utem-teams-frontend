@@ -1,7 +1,14 @@
 <template>
- <div class="submit-form">
+ <b-modal 
+    :id="`${compId}-${projectId}`"
+    ref="modal"
+    :title="title"
+    :ok-title="buttonTitle"
+    ok-only
+    @ok="handleOk"
+  >
    
-    <b-form v-if="!submitted">
+    <form ref="form" @submit.stop.prevent="handleSubmit" v-if="mode !== 'delete'">
       <b-form-group
         id="input-group-1"
         label="Nombre proyecto"
@@ -40,20 +47,55 @@
         >
         </multiselect>
       </b-form-group>
-
-      <b-button @click="saveProject" variant="primary">Crear Proyecto</b-button>
-    </b-form>
-  </div>
-
-
+    </form>
+    <h5 v-else> ¿Estás seguro de eliminar {{ projObj.name }}? </h5>
+  </b-modal>
 </template>
 
 <script>
-import { getUserList, createProject } from "../api/api.service.js";
+import { createProject } from "../api/api.service.js";
 import Multiselect from 'vue-multiselect';
 
 export default {
-  name: "add-project",
+  name: "ProjectModal",
+  props: {
+    title: {
+      type: String,
+      required: false,
+      default: 'Crear Proyecto'
+    },
+    compId: {
+      type: String,
+      required: true
+    },
+    buttonTitle: {
+      type: String,
+      required: false,
+      default: 'Crear Proyecto'
+    },
+    projectId: {
+      type: Number,
+      required: true
+    },
+    userList: {
+      type: Array,
+      required: false
+    },
+    projObj: {
+      type: Object,
+      required: false
+    },
+    mode: {
+      type: String,
+      required: false,
+      default: 'post'
+    },
+    preselectedMembers: {
+      type: Array,
+      required: false,
+      default: () => []
+    }
+  },
   data() {
     return {
       project: {
@@ -62,33 +104,58 @@ export default {
         description: "",
         members: []
       },
-      userList: [],
-      value: [],
+      value: [...this.preselectedMembers],
+      formValidity: null,
       submitted: false
     };
   },
   components: { Multiselect },
   mounted() {
-    let items = []
-    getUserList()
-      .then(response => {
-        console.log("users data: ", response.data.data)
-        for (const data of response.data.data) {
-          const item = {
-            'uuid': data.uuid,
-            'full_name': data.full_name,
-          };
-          items.push(item);
-        }
-        this.userList = items;
-        console.log("Items: ", items);
-        console.log("userList: ", this.userList);
-      })
-      .catch(e => {
-        console.log(e)
-      })
+    if (this.mode === 'patch') {
+      this.project = {...this.projObj}
+      // this.value = this.project.project_members
+      console.log("projObj: ", this.projObj)
+      console.log("value: ", this.value)
+      /*this.selected = this.taskObj.assignee.full_name
+      console.log("full_name: ", this.taskObj.assignee.full_name)
+      console.log("this.selected: ", this.selected)*/
+    }
   },
   methods: {
+    validateForm() {
+      const isValid = this.$refs.form.checkValidity()
+      console.log("is valid?: ", isValid)
+      this.formValidity = isValid
+      return isValid
+    },
+    handleOk(bvModalEvt) {
+      bvModalEvt.preventDefault()
+      if (this.mode !== 'delete') {
+        this.handleSubmit()
+      } else {
+        this.handleTaskDeletion(this.taskId)
+      }
+      
+      this.$nextTick(() => {
+        this.$bvModal.hide(`${this.compId}-${this.taskId}`)
+        this.$emit('reloadData')
+      })
+    },
+    handleSubmit() {
+      if (!this.validateForm()) {
+        return
+      }
+
+      console.log("mode: ", this.mode)
+
+      if (this.mode === 'post') {
+        this.saveProject()
+      } else if (this.mode === 'patch') {
+        console.log("in else if...")
+        this.updateProject(this.projectId)
+      }
+      
+    },
     saveProject() {
       let data = {
         name: this.project.name,
@@ -107,6 +174,9 @@ export default {
         .catch(e => {
           console.log(e);
         });
+    },
+    updateProject() {
+      
     },
     newProject() {
       this.submitted = false;
