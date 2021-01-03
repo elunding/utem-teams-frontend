@@ -12,6 +12,7 @@ const getMembersList = (projectId) => httpClient.get(`${PROJECTS_ENDPOINT}${proj
 const getUserList = () => httpClient.get(`/users/`);
 const changeTaskStatus = (projectId, taskId, status) => httpClient.patch(`${PROJECTS_ENDPOINT}${projectId}/tasks/${taskId}/`, status);
 const changeTaskPriority = (projectId, taskId, priority) => httpClient.patch(`${PROJECTS_ENDPOINT}${projectId}/tasks/${taskId}/`, priority);
+const updateTask = (projectId, taskId, data) => httpClient.patch(`${PROJECTS_ENDPOINT}${projectId}/tasks/${taskId}/`, data);
 
 
 export {
@@ -24,4 +25,5 @@ export {
     getUserList,
     changeTaskStatus,
     changeTaskPriority,
+    updateTask,
 }
