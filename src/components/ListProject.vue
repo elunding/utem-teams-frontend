@@ -33,7 +33,9 @@
                 <b-icon icon="trash" aria-hidden="true"></b-icon> Eliminar
               </b-button>
               <ProjectModal compId="delete-project-modal" :projectId="project.id" mode="delete" :projObj=project title="Eliminar Proyecto" buttonTitle="Eliminar" v-on:reloadData="handleReload"/>
-              <a v-bind:href="`/projects/${project.id}/tasks`" class="btn btn-primary btn tasks-btn btn-sm" role="button">Ver Tareas</a>
+              <a v-bind:href="`/projects/${project.id}/tasks`" class="btn btn-secondary btn tasks-btn btn-sm" role="button">
+                <b-icon icon="list-task" aria-hidden="true"></b-icon> Ver Tareas
+              </a>
             </div> 
           </b-card>
         </b-card-group>
