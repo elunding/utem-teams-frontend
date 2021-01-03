@@ -6,7 +6,7 @@
       <b-button v-b-modal="`add-task-modal-${0}`" variant="primary">
         <b-icon icon="plus-circle" aria-hidden="true"></b-icon> Añadir tarea
       </b-button>
-      <AddTask compId="add-task-modal" :taskId=0 v-if="assigneeList" :assignees=assigneeList />
+      <AddTask compId="add-task-modal" :taskId=0 v-if="assigneeList" :assignees=assigneeList v-on:reloadData="handleReload" />
     </div>
     <br/>
     <div class="my-grid">
@@ -24,7 +24,7 @@
             <h4>Pendientes</h4>
             <br>
             <draggable id="TD" class="drag-area" :list="todoTasks" group="tasks" :move="changeStatus">
-              <b-card 
+              <b-card
                 class="task-card"
                 :title="task.name"
                 v-for="(task, index) in todoTasks" :key="index"
@@ -36,15 +36,19 @@
               <b-card-text class="task-assignee">
                 Encargado: {{ task.assignee.full_name }}
               </b-card-text>
+              <br>
               <div class="options-cont">
-                <b-button v-b-modal="`edit-task-modal-${task.id}`" class="edit-btn" variant="primary">
+                <b-button v-b-modal="`edit-task-modal-${task.id}`" class="edit-btn" size="sm" variant="primary">
                   <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
                 </b-button>
-                <AddTask compId="edit-task-modal" :taskId="task.id" v-if="assigneeList" :assignees=assigneeList mode="patch" :taskObj=task title="Editar Tarea" buttonTitle="Guardar Cambios"/>
-                <b-dropdown class="md-2 prio-dpdwn">  
+                <b-button v-b-modal="`delete-task-modal-${task.id}`" class="delete-btn" size="sm" variant="danger">
+                  <b-icon icon="trash" aria-hidden="true"></b-icon> Eliminar
+                </b-button>
+                <AddTask compId="delete-task-modal" :taskId="task.id" mode="delete" :taskObj=task title="Eliminar Tarea" buttonTitle="Eliminar"/>
+                <b-dropdown size="sm" class="md-2 prio-dpdwn">  
                   <template #button-content>
                     <b-icon icon="exclamation-triangle" aria-hidden="true"></b-icon> 
-                     {{ translatePriority(task.priority_name) }}
+                    {{ translatePriority(task.priority_name) }}
                   </template>
                   <b-dropdown-item @click="changePriority(1, task.id)">Baja</b-dropdown-item>
                   <b-dropdown-item @click="changePriority(2, task.id)">Media</b-dropdown-item>
@@ -73,12 +77,16 @@
               <b-card-text class="task-assignee">
                 Encargado: {{ task.assignee.full_name }}
               </b-card-text>
+              <br>
               <div class="options-cont">
-                <b-button v-b-modal="`edit-task-modal-${task.id}`" class="edit-btn" variant="primary">
+                <b-button v-b-modal="`edit-task-modal-${task.id}`" size="sm" class="edit-btn" variant="primary">
                   <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
                 </b-button>
-                <AddTask compId="edit-task-modal" :taskId="task.id" v-if="assigneeList" :assignees=assigneeList mode="patch" :taskObj=task title="Editar Tarea" buttonTitle="Guardar Cambios"/>
-                <b-dropdown class="md-2 prio-dpdwn">  
+                <b-button v-b-modal="`delete-task-modal-${task.id}`" class="delete-btn" size="sm" variant="danger">
+                  <b-icon icon="trash" aria-hidden="true"></b-icon> Eliminar
+                </b-button>
+                <AddTask compId="delete-task-modal" :taskId="task.id" mode="delete" :taskObj=task title="Eliminar Tarea" buttonTitle="Eliminar"/>
+                <b-dropdown size="sm" class="md-2 prio-dpdwn">  
                   <template #button-content>
                     <b-icon icon="exclamation-triangle" aria-hidden="true"></b-icon> 
                      {{ translatePriority(task.priority_name) }}
@@ -110,12 +118,16 @@
               <b-card-text class="task-assignee">
                 Encargado: {{ task.assignee.full_name }}
               </b-card-text>
+              <br>
               <div class="options-cont">
-                <b-button v-b-modal="`edit-task-modal-${task.id}`" class="edit-btn" variant="primary">
+                <b-button v-b-modal="`edit-task-modal-${task.id}`" size="sm" class="edit-btn" variant="primary">
                   <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
                 </b-button>
-                <AddTask compId="edit-task-modal" :taskId="task.id" v-if="assigneeList" :assignees=assigneeList mode="patch" :taskObj=task title="Editar Tarea" buttonTitle="Guardar Cambios"/>
-                <b-dropdown class="md-2 prio-dpdwn">  
+                <b-button v-b-modal="`delete-task-modal-${task.id}`" class="delete-btn" size="sm" variant="danger">
+                  <b-icon icon="trash" aria-hidden="true"></b-icon> Eliminar
+                </b-button>
+                <AddTask compId="delete-task-modal" :taskId="task.id" mode="delete" :taskObj=task title="Eliminar Tarea" buttonTitle="Eliminar"/>
+                <b-dropdown size="sm" class="md-2 prio-dpdwn">  
                   <template #button-content>
                     <b-icon icon="exclamation-triangle" aria-hidden="true"></b-icon> 
                      {{ translatePriority(task.priority_name) }}
@@ -157,6 +169,9 @@ export default {
     };
   },
   methods: {
+    handleReload() {
+      this.retrieveTasks()
+    },
     retrieveTasks() {
       getTasks(this.projectId)
         .then(response => {
@@ -176,9 +191,8 @@ export default {
         });
     },
     getAssignees() {
-      let projectId = this.$route.params.id;
       let items = []
-      getMembersList(projectId)
+      getMembersList(this.projectId)
         .then(response => {
           console.log("assginee data: ", response.data.data)
           for (const data of response.data.data) {
@@ -276,6 +290,19 @@ export default {
 
   .edit-btn {
     margin-right: auto;
+    padding-right: 5px;
+    padding-left: 5px;
   }
+
+  .delete-btn {
+    margin-right: auto;
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+
+  /*.prio-dpdwn {
+    padding-right: 5px;
+    padding-left: 5px;
+  }*/
 
 </style>

@@ -7,7 +7,7 @@
     ok-only
     @ok="handleOk"
   >
-    <form ref="form" @submit.stop.prevent="handleSubmit">
+    <form ref="form" @submit.stop.prevent="handleSubmit" v-if="mode !== 'delete'">
       <b-form-group
         id="input-group-1"
         label="Nombre Tarea"
@@ -67,11 +67,12 @@
         </b-form-select>-->
       </b-form-group>
     </form>
+    <h5> ¿Estás seguro de eliminar {{ taskObj.name }}? </h5>
   </b-modal>
 </template>
 
 <script>
-import { createTask, updateTask } from "../api/api.service.js";
+import { createTask, updateTask, deleteTask } from "../api/api.service.js";
 
 export default {
   name: "AddTask",
@@ -96,7 +97,7 @@ export default {
     },
     assignees: {
       type: Array,
-      required: true
+      required: false
     },
     taskObj: {
       type: Object,
@@ -118,7 +119,8 @@ export default {
       },
       selected: null,
       submitted: false,
-      formValidity: null
+      formValidity: null,
+      projectId: this.$route.params.id,
     };
   },
   mounted() {
@@ -142,7 +144,16 @@ export default {
     },
     handleOk(bvModalEvt) {
       bvModalEvt.preventDefault()
-      this.handleSubmit()
+      if (this.mode !== 'delete') {
+        this.handleSubmit()
+      } else {
+        this.handleTaskDeletion(this.taskId)
+      }
+      
+      this.$nextTick(() => {
+        this.$bvModal.hide(`${this.compId}-${this.taskId}`)
+        this.$emit('reloadData')
+      })
     },
     handleSubmit() {
       if (!this.validateForm()) {
@@ -158,9 +169,6 @@ export default {
         this.updateTask(this.taskId)
       }
       
-      this.$nextTick(() => {
-        this.$bvModal.hide('modal-prevent-closing')
-      })
     },
     saveTask() {
       let data = {
@@ -170,11 +178,11 @@ export default {
           uuid: this.task.assignee
         }
       };
-      let projectId = this.$route.params.id;
+      // let projectId = this.$route.params.id;
       console.log("data: ", data);
-      console.log("projectId: ", projectId);
+      console.log("projectId: ", this.projectId);
       console.log("calling createTask...");
-      createTask(data, projectId)
+      createTask(data, this.projectId)
         .then(response => {
           this.description.name = response.data.name;
           console.log("Task created!, data: ", response.data);
@@ -192,10 +200,10 @@ export default {
           uuid: this.task.assignee
         }
       };
-      let projectId = this.$route.params.id;
+      // let projectId = this.$route.params.id;
       console.log("calling updateTask...");
       console.log("data: ", data);
-      updateTask(projectId, taskId, data)
+      updateTask(this.projectId, taskId, data)
         .then(response => {
           this.description.name = response.data.name;
           console.log("Task created!, data: ", response.data);
@@ -204,6 +212,17 @@ export default {
         .catch(e => {
           console.log(e);
         }); 
+    },
+    handleTaskDeletion(taskId) {
+      deleteTask(this.projectId, taskId)
+        .then(response => {
+          console.log("task deleted! ", taskId)
+          console.log("projectId: ", this.projectId)
+          console.log("response: ", response)
+        })
+        .catch(e => {
+          console.log(e)
+        })
     },
     newTask() {
       this.submitted = false;
