@@ -162,7 +162,7 @@ export default {
       let data = {
         name: this.project.name,
         description: this.project.description,
-        project_members: this.project.members.map(({ uuid }) => ({ uuid: uuid }))
+        project_members: this.project.project_members.map(({ uuid }) => ({ uuid: uuid }))
       };
       console.log("data: ", data);
       console.log("members: ", data.project_members)
