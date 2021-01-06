@@ -54,7 +54,7 @@
         <!--<b-form-select v-if="mode === 'post'"-->
         <b-form-select
           id="assignee-dropdown"
-          v-model="task.assignee"
+          v-model="selected"
           :options="assignees"
         >
         </b-form-select>
@@ -107,6 +107,11 @@ export default {
       type: String,
       required: false,
       default: 'post'
+    },
+    selectedAssignee: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   data() {
@@ -116,8 +121,9 @@ export default {
         name: "",
         description: "",
         assignee: "",
+        priority_name: ""
       },
-      selected: null,
+      selected: this.selectedAssignee,
       submitted: false,
       formValidity: null,
       projectId: this.$route.params.id,
@@ -129,8 +135,8 @@ export default {
     console.log("assignees: ", this.assignees)
     if (this.mode === 'patch') {
       this.task = {...this.taskObj}
-      this.selected = this.taskObj.assignee.full_name
-      console.log("full_name: ", this.taskObj.assignee.full_name)
+      /*this.selected = this.taskObj.assignee.full_name
+      console.log("full_name: ", this.taskObj.assignee.full_name)*/
       console.log("this.selected: ", this.selected)
     }
     // this.assigneeList = this.assignees
@@ -152,7 +158,8 @@ export default {
       
       this.$nextTick(() => {
         this.$bvModal.hide(`${this.compId}-${this.taskId}`)
-        this.$emit('reloadData')
+        /*console.log("emitting reloadData with ", this.task)
+        this.$emit('reloadData', this.task)*/
       })
     },
     handleSubmit() {
@@ -184,9 +191,10 @@ export default {
       console.log("calling createTask...");
       createTask(data, this.projectId)
         .then(response => {
-          this.description.name = response.data.name;
           console.log("Task created!, data: ", response.data);
           this.submitted = true;
+          console.log("emitting reloadData with ", response.data)
+          this.$emit('reloadData', response.data)
         })
         .catch(e => {
           console.log(e);
@@ -205,9 +213,10 @@ export default {
       console.log("data: ", data);
       updateTask(this.projectId, taskId, data)
         .then(response => {
-          this.description.name = response.data.name;
-          console.log("Task created!, data: ", response.data);
+          console.log("Task updated!, data: ", response.data);
           this.submitted = true;
+          console.log("emitting reloadData with ", response.data)
+          this.$emit('reloadData', response.data)
         })
         .catch(e => {
           console.log(e);
@@ -219,6 +228,8 @@ export default {
           console.log("task deleted! ", taskId)
           console.log("projectId: ", this.projectId)
           console.log("response: ", response)
+          console.log("emitting reloadData with ", this.task)
+          this.$emit('reloadData', this.task)
         })
         .catch(e => {
           console.log(e)

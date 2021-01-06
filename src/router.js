@@ -33,7 +33,8 @@ export default new Router({
         {
             path: '/projects/:id/tasks',
             name: 'tasks',
-            component: ListTask
+            component: ListTask,
+            props: true
         },
         {
             path: '/projects/:id/tasks/new',

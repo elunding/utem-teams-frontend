@@ -6,7 +6,12 @@
       <b-button v-b-modal="`add-task-modal-${0}`" variant="primary">
         <b-icon icon="plus-circle" aria-hidden="true"></b-icon> Añadir tarea
       </b-button>
-      <TaskModal compId="add-task-modal" :taskId=0 v-if="assigneeList" :assignees=assigneeList v-on:reloadData="handleReload" />
+      <TaskModal
+        compId="add-task-modal"
+        :taskId=0
+        v-if="assigneeList" :assignees=assigneeList
+        @reloadData="handleReload($event, 'push', 'TD')"
+      />
     </div>
     <br/>
     <div class="my-grid">
@@ -23,7 +28,7 @@
               <b-card
                 class="task-card"
                 :title="task.name"
-                v-for="(task, index) in todoTasks" :key="index"
+                v-for="task in todoTasks" :key="task.id"
                 style="max-width: 23rem; margin-bottom: 20px;"
               >
               <!--<b-card-text class="task-description">
@@ -37,11 +42,30 @@
                 <b-button v-b-modal="`edit-task-modal-${task.id}`" class="edit-btn" size="sm" variant="primary">
                   <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
                 </b-button>
-                <TaskModal compId="edit-task-modal" :taskId="task.id" v-if="assigneeList" :assignees=assigneeList mode="patch" :taskObj=task title="Editar Tarea" buttonTitle="Guardar Cambios"/>
+                <TaskModal
+                  compId="edit-task-modal"
+                  :taskId="task.id"
+                  v-if="assigneeList"
+                  @reloadData="handleReload($event, 'update', 'TD')"
+                  :assignees=assigneeList
+                  mode="patch"
+                  :taskObj=task
+                  title="Editar Tarea"
+                  buttonTitle="Guardar Cambios"
+                  :selectedAssignee=task.assignee.uuid
+                />
                 <b-button v-b-modal="`delete-task-modal-${task.id}`" class="delete-btn" size="sm" variant="danger">
                   <b-icon icon="trash" aria-hidden="true"></b-icon> Eliminar
                 </b-button>
-                <TaskModal compId="delete-task-modal" :taskId="task.id" mode="delete" :taskObj=task title="Eliminar Tarea" buttonTitle="Eliminar"/>
+                <TaskModal
+                  compId="delete-task-modal"
+                  :taskId="task.id"
+                  mode="delete"
+                  @reloadData="handleReload($event, 'delete', 'TD')"
+                  :taskObj=task
+                  title="Eliminar Tarea"
+                  buttonTitle="Eliminar"
+                />
                 <b-dropdown size="sm" class="md-2 prio-dpdwn">  
                   <template #button-content>
                     <b-icon icon="exclamation-triangle" aria-hidden="true"></b-icon> 
@@ -65,7 +89,7 @@
               <b-card 
                 class="task-card"
                 :title="task.name"
-                v-for="(task, index) in inProgressTasks" :key="index"
+                v-for="task in inProgressTasks" :key="task.id"
                 style="max-width: 23rem; margin-bottom: 20px;"
               >
               <!--<b-card-text class="task-description">
@@ -79,11 +103,29 @@
                 <b-button v-b-modal="`edit-task-modal-${task.id}`" size="sm" class="edit-btn" variant="primary">
                   <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
                 </b-button>
-                <TaskModal compId="edit-task-modal" :taskId="task.id" v-if="assigneeList" :assignees=assigneeList mode="patch" :taskObj=task title="Editar Tarea" buttonTitle="Guardar Cambios"/>
+                <TaskModal
+                  compId="edit-task-modal"
+                  :taskId="task.id"
+                  @reloadData="handleReload($event, 'update', 'IP')"
+                  v-if="assigneeList" :assignees=assigneeList
+                  mode="patch"
+                  :taskObj=task
+                  title="Editar Tarea"
+                  buttonTitle="Guardar Cambios"
+                  :selectedAssignee=task.assignee.uuid
+                />
                 <b-button v-b-modal="`delete-task-modal-${task.id}`" class="delete-btn" size="sm" variant="danger">
                   <b-icon icon="trash" aria-hidden="true"></b-icon> Eliminar
                 </b-button>
-                <TaskModal compId="delete-task-modal" :taskId="task.id" mode="delete" :taskObj=task title="Eliminar Tarea" buttonTitle="Eliminar"/>
+                <TaskModal
+                  compId="delete-task-modal"
+                  :taskId="task.id"
+                  @reloadData="handleReload($event, 'delete', 'IP')"
+                  mode="delete"
+                  :taskObj=task
+                  title="Eliminar Tarea"
+                  buttonTitle="Eliminar"
+                />
                 <b-dropdown size="sm" class="md-2 prio-dpdwn">  
                   <template #button-content>
                     <b-icon icon="exclamation-triangle" aria-hidden="true"></b-icon> 
@@ -107,7 +149,7 @@
               <b-card 
                 class="task-card"
                 :title="task.name"
-                v-for="(task, index) in doneTasks" :key="index"
+                v-for="task in doneTasks" :key="task.id"
                 style="max-width: 23rem; margin-bottom: 20px;"
               >
               <!--<b-card-text class="task-description">
@@ -121,11 +163,29 @@
                 <b-button v-b-modal="`edit-task-modal-${task.id}`" size="sm" class="edit-btn" variant="primary">
                   <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
                 </b-button>
-                <TaskModal compId="edit-task-modal" :taskId="task.id" v-if="assigneeList" :assignees=assigneeList mode="patch" :taskObj=task title="Editar Tarea" buttonTitle="Guardar Cambios"/>
+                <TaskModal 
+                  compId="edit-task-modal"
+                  :taskId="task.id"
+                  @reloadData="handleReload($event, 'update', 'DN')"
+                  v-if="assigneeList" :assignees=assigneeList
+                  mode="patch"
+                  :taskObj=task
+                  title="Editar Tarea"
+                  buttonTitle="Guardar Cambios"
+                  :selectedAssignee=task.assignee.uuid
+                />
                 <b-button v-b-modal="`delete-task-modal-${task.id}`" class="delete-btn" size="sm" variant="danger">
                   <b-icon icon="trash" aria-hidden="true"></b-icon> Eliminar
                 </b-button>
-                <TaskModal compId="delete-task-modal" :taskId="task.id" mode="delete" :taskObj=task title="Eliminar Tarea" buttonTitle="Eliminar"/>
+                <TaskModal
+                  compId="delete-task-modal"
+                  :taskId="task.id"
+                  @reloadData="handleReload($event, 'delete', 'DN')"
+                  mode="delete"
+                  :taskObj=task
+                  title="Eliminar Tarea"
+                  buttonTitle="Eliminar"
+                />
                 <b-dropdown size="sm" class="md-2 prio-dpdwn">  
                   <template #button-content>
                     <b-icon icon="exclamation-triangle" aria-hidden="true"></b-icon> 
@@ -156,6 +216,12 @@ export default {
     draggable,
     TaskModal
   },
+  /*props: {
+    projectName: {
+      type: String,
+      required: true
+    }
+  },*/
   data() {
     return {
       todoTasks: [],
@@ -163,20 +229,46 @@ export default {
       doneTasks: [],
       tasksExists: false,
       projectId: this.$route.params.id,
-      projectName: '',
+      // projectName: '',
       assigneeList: []
     };
   },
   methods: {
-    handleReload() {
-      this.retrieveTasks()
+    handleReload(task, mode, group) {
+      console.log("on handleReload...")
+      // this.retrieveTasks()
+      if (mode === 'push') {
+        this.todoTasks.push(task)
+      } else if (mode === 'update') {
+        if (group === 'TD') {
+          const index = this.todoTasks.indexOf(task)
+          this.todoTasks.splice(index, 1, task)
+        } else if (group === 'IP') {
+          const index = this.inProgressTasks.indexOf(task)
+          this.inProgressTasks.splice(index, 1, task)
+        } else if (group === 'DN') {
+          const index = this.doneTasks.indexOf(task)
+          this.doneTasks.splice(index, 1, task)
+        }
+      } else if (mode === 'delete') {
+        if (group === 'TD') {
+          const index = this.todoTasks.indexOf(task)
+          this.todoTasks.splice(index, 1)
+        } else if (group === 'IP') {
+          const index = this.inProgressTasks.indexOf(task)
+          this.inProgressTasks.splice(index, 1)
+        } else if (group === 'DN') {
+          const index = this.doneTasks.indexOf(task)
+          this.doneTasks.splice(index, 1)
+        }
+      }
     },
     retrieveTasks() {
       getTasks(this.projectId)
         .then(response => {
-          this.todoTasks = response.data.data.todo_tasks;
-          this.inProgressTasks = response.data.data.in_progress_tasks;
-          this.doneTasks = response.data.data.done_tasks;
+          this.todoTasks = response.data.data.todo_tasks
+          this.inProgressTasks = response.data.data.in_progress_tasks
+          this.doneTasks = response.data.data.done_tasks
           this.$nextTick(() => this.setTasksExists(
             this.todoTasks,
             this.inProgressTasks,
