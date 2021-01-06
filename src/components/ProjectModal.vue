@@ -172,6 +172,8 @@ export default {
           this.description.id = response.data.id;
           console.log("Project created!, data: ", response.data);
           this.submitted = true;
+          console.log("emitting reloadData with ", response.data)
+          this.$emit('reloadData', response.data)
         })
         .catch(e => {
           console.log(e);
@@ -187,6 +189,8 @@ export default {
         .then(response => {
           console.log("update response: ", response)
           this.submitted = true
+          console.log("emitting reloadData with ", response.data)
+          this.$emit('reloadData', response.data)
         })
         .catch(e => {
           console.log("an error has occurred: ", e)
@@ -197,6 +201,8 @@ export default {
         .then(response => {
           console.log("project deleted! ", projectId)
           console.log("response: ", response)
+          console.log("emitting reloadData with ", this.project)
+          this.$emit('reloadData', this.project)
         })
         .catch(e => {
           console.log("An error has occurred while trying to delete the project", e)

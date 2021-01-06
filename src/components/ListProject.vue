@@ -6,7 +6,12 @@
       <b-button v-b-modal="`add-project-modal-${0}`" variant="primary">
         <b-icon icon="plus-circle" aria-hidden="true"></b-icon> Crear Proyecto
       </b-button>
-      <ProjectModal compId="add-project-modal" :projectId=0 v-if="userList" :userList=userList v-on:reloadData="handleReload" />
+      <ProjectModal
+        compId="add-project-modal"
+        :projectId=0
+        v-if="userList" :userList=userList
+        @reloadData="handleReload($event, 'push')"
+      />
     </div>
     <br/>
     <div class="my-grid">
@@ -28,11 +33,28 @@
                 <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
               </b-button>
               <!--<ProjectModal compId="edit-project-modal" :projectId="project.id" v-if="userList" :userList=userList mode="patch" :projObj=project title="Detalles Proyecto" buttonTitle="Guardar Cambios" :preselectedMembers=project.project_members  v-on:reloadData="handleReload"/>-->
-              <ProjectModal compId="edit-project-modal" :projectId="project.id" v-if="userList" :userList=userList mode="patch" :projObj=project title="Detalles Proyecto" buttonTitle="Guardar Cambios" v-on:reloadData="handleReload"/>
+              <ProjectModal
+                compId="edit-project-modal"
+                :projectId="project.id"
+                v-if="userList" :userList=userList
+                mode="patch"
+                :projObj=project
+                title="Detalles Proyecto"
+                buttonTitle="Guardar Cambios"
+                @reloadData="handleReload($event, 'update')"
+              />
               <b-button v-b-modal="`delete-project-modal-${project.id}`" class="delete-btn" size="sm" variant="danger">
                 <b-icon icon="trash" aria-hidden="true"></b-icon> Eliminar
               </b-button>
-              <ProjectModal compId="delete-project-modal" :projectId="project.id" mode="delete" :projObj=project title="Eliminar Proyecto" buttonTitle="Eliminar" v-on:reloadData="handleReload"/>
+              <ProjectModal
+                compId="delete-project-modal"
+                :projectId="project.id"
+                mode="delete"
+                :projObj=project
+                title="Eliminar Proyecto"
+                buttonTitle="Eliminar"
+                @reloadData="handleReload($event, 'delete')"
+              />
               <!--<a v-bind:href="`/projects/${project.id}/tasks`" :projectName="project.name" class="btn btn-secondary btn tasks-btn btn-sm" role="button">
                 <b-icon icon="list-task" aria-hidden="true"></b-icon> Ver Tareas
               </a>-->
@@ -65,8 +87,22 @@ export default {
     }
   },
   methods: {
-    handleReload() {
-      this.retrieveProjects()
+    handleReload(project, mode) {
+      console.log("on handleReload...")
+      // this.retrieveTasks()
+      if (mode === 'push') {
+        this.projects.push(project)
+      } else if (mode === 'update') {
+        const index = this.projects.indexOf(project)
+        console.log("index: ", index)
+        console.log("splicing...")
+        console.log("project: ", project)
+        console.log("projects: ", this.projects)
+        this.projects.splice(index, 1, project)
+      } else if (mode === 'delete') {
+        const index = this.projects.indexOf(project)
+        this.projects.splice(index, 1)
+      }
     },
     retrieveProjects() {
       getProjects()
