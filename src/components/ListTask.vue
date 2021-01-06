@@ -242,6 +242,10 @@ export default {
       } else if (mode === 'update') {
         if (group === 'TD') {
           const index = this.todoTasks.indexOf(task)
+          console.log("index: ", index)
+          console.log("splicing...")
+          console.log("task: ", task)
+          console.log("todoTasks: ", this.todoTasks)
           this.todoTasks.splice(index, 1, task)
         } else if (group === 'IP') {
           const index = this.inProgressTasks.indexOf(task)

@@ -178,11 +178,13 @@ export default {
       
     },
     saveTask() {
+      console.log("task.assignee: ", this.selected)
       let data = {
         name: this.task.name,
         description: this.task.description,
         assignee: {
-          uuid: this.task.assignee
+          // uuid: this.task.assignee
+          uuid: this.selected
         }
       };
       // let projectId = this.$route.params.id;
@@ -201,11 +203,13 @@ export default {
         });
     },
     updateTask(taskId) {
-     let data = {
+      console.log("task.assignee: ", this.selected)
+      let data = {
         name: this.task.name || '',
         description: this.task.description || '',
         assignee: {
-          uuid: this.task.assignee
+          // uuid: this.task.assignee
+          uuid: this.selected
         }
       };
       // let projectId = this.$route.params.id;
