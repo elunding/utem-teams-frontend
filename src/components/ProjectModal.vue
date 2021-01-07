@@ -38,6 +38,7 @@
           v-model="project.project_members"
           :options="userList"
           :multiple="true"
+          :max="2"
           :close-on-select="false"
           :clear-on-select="false"
           :preserve-search="true"
@@ -45,6 +46,7 @@
           label="full_name"
           track-by="full_name"
         >
+        <span slot="maxElements">Máximo de 10 miembros</span>
         </multiselect>
       </b-form-group>
     </form>

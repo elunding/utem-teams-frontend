@@ -18,7 +18,8 @@
       <div class="jumbotron" v-if="!projects || !projects.length">  
         <h3 class="display-6">No hay proyectos existentes</h3>
       </div>
-      <b-card-group v-else v-for="(project, index) in projects" :key="index">
+      <!--<b-card-group v-else v-for="(project, index) in projects" :key="index" v-bind="slicedProjects">-->
+      <b-card-group v-else v-for="(project, index) in slicedProjects" :key="index">
           <b-card 
             class="proj-card"
             :title="project.name"
@@ -68,6 +69,16 @@
           </b-card>
         </b-card-group>
       </div>
+      <div class="mt-3">
+        <b-pagination
+          v-model="currentPage"
+          :per-page="perPage"
+          pills
+          :total-rows="projectsAmount"
+          align="center"
+        >
+        </b-pagination>
+      </div>
   </div>
 </template>
 
@@ -82,9 +93,21 @@ export default {
   },
   data() {
     return {
+      perPage: 4,
+      currentPage: 1,
       projects: [],
-      userList: []
+      userList: [],
+      projectsAmount: 0,
     }
+  },
+  computed: {
+    /*rows() {
+      return this.projects.length
+    },*/
+    slicedProjects() {
+      const items = this.projects || []
+      return items.slice((this.currentPage - 1) * this.perPage, this.currentPage * this.perPage)
+    },
   },
   methods: {
     handleReload(project, mode) {
@@ -104,11 +127,16 @@ export default {
         this.projects.splice(index, 1)
       }
     },
+    getProjectsAmount() {
+      this.projectsAmount = this.projects.length
+    },
     retrieveProjects() {
       getProjects()
         .then(response => {
           this.projects = response.data.data;
+          this.projectsAmount = this.projects.length;
           console.log(response.data);
+          console.log("projects length: ", this.projects.length)
         })
         .catch(e => {
           console.log(e);
@@ -139,8 +167,10 @@ export default {
       console.log("mounted!")
       console.log("calling retrieveProjects...")
       this.retrieveProjects()
+      // this.getProjectsAmount()
       console.log("calling retrieveUserList...")
       this.retrieveUserList()
+      console.log("PROJECTS AMOUNT: ", this.projectsAmount)
     }
 };
 </script>
