@@ -38,7 +38,7 @@
           v-model="project.project_members"
           :options="userList"
           :multiple="true"
-          :max="2"
+          :max="10"
           :close-on-select="false"
           :clear-on-select="false"
           :preserve-search="true"
