@@ -219,6 +219,44 @@ export default {
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style>
+  .multiselect__placeholder {
+    display: inline-block !important;
+    margin-bottom: 0px !important;
+    padding-top: 0px !important;
+  }
+
+  .multiselect__option--highlight {
+    background: #0275d8 !important;
+  }
+
+  .multiselect__option--highlight:after {
+    background: #0275d8 !important;
+  }
+
+  .multiselect__tag {
+    background: #f0f0f0 !important;
+    border: 1px solid rgba(60, 60, 60, 0.26) !important;
+    color: black !important;
+    margin-bottom: 0px !important;
+    margin-right: 5px !important;
+  }
+
+  .multiselect__tag-icon:after {
+    color: rgba(60, 60, 60, 0.5) !important;
+  }
+
+  .multiselect__tag-icon:focus,
+  .multiselect__tag-icon:hover {
+    background: #f0f0f0 !important;
+  }
+
+  .multiselect__tag-icon:focus:after,
+  .multiselect__tag-icon:hover:after {
+    color: red !important;
+  }
+</style>
+
 <style scoped>
   .submit-form {
     margin-top: 90px;
