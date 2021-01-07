@@ -170,13 +170,13 @@ export default {
     display: flex;
   }
 
-  /*.my-grid {
-    display: grid;*/
+  .my-grid {
+    display: grid;
     /*justify-items: center;*/
     /* 280px is the minimum a column can get, you might need to adjust it based on your needs. */
-    /*grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     grid-gap: 1.5rem;
-  }*/
+  }
 
   /*.my-grid > * {
     width: 100%;
