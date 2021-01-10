@@ -19,7 +19,8 @@
         <b-nav-item-dropdown right>
           <!-- Using 'button-content' slot -->
           <template #button-content>
-            <em>User</em>
+            <!--<em>User</em>-->
+            <em> {{ userName }} </em>
           </template>
           <b-dropdown-item v-on:click.self="logout" class="nav-link">Cerrar Sesión</b-dropdown-item>
         </b-nav-item-dropdown>
@@ -29,18 +30,30 @@
 </template>
 
 <script>
-    import UserAuthService from '../api/authentication.service'
+    import UserAuthService from '../api/authentication.service';
+    import { getUserDetails } from '../api/api.service.js';
 
     export default {
         name: 'NavBar',
         data() {
-            return {};
+            return {
+              'userName': ''
+            };
         },
         methods: {
             logout() {
                 UserAuthService.logout();
                 this.$router.push('/login');
             }
+        },
+        created() {
+          getUserDetails()
+            .then(resp => {
+              this.userName = resp.data.full_name;
+            })
+            .catch(e => {
+              console.log("An error has occurred: ", e);
+            });
         }
     }
 </script>

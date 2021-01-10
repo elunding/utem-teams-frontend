@@ -10,7 +10,9 @@ class UserAuthService {
         const response = await axios.post(process.env.VUE_APP_BASE_URL + API_AUTH_ENDPOINT, {
             email: email,
             password: password
-        });
+        }).then(
+
+        );
         console.log("response: ", response);
         if (response.status === 200 && response.data.access !== undefined) {
             localStorage.setItem('token', response.data.access);

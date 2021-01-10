@@ -50,12 +50,12 @@
         </multiselect>
       </b-form-group>
     </form>
-    <h5 v-else> ¿Estás seguro de eliminar {{ projObj.name }}? </h5>
+    <h6 v-else> ¿Estás seguro de finalizar <strong>{{ projObj.name }}</strong>? <br><br> Si lo haces ya no podrás crear tareas en este proyecto </h6>
   </b-modal>
 </template>
 
 <script>
-import { createProject, updateProject, deleteProject } from "../api/api.service.js";
+import { createProject, updateProject } from "../api/api.service.js";
 import Multiselect from 'vue-multiselect';
 
 export default {
@@ -137,7 +137,7 @@ export default {
       if (this.mode !== 'delete') {
         this.handleSubmit()
       } else {
-        this.handleProjectDeletion(this.projectId)
+        this.handleProjectCompletion(this.projectId)
       }
       
       this.$nextTick(() => {
@@ -198,16 +198,19 @@ export default {
           console.log("an error has occurred: ", e)
         });
     },
-    handleProjectDeletion(projectId) {
-      deleteProject(projectId)
+    handleProjectCompletion(projectId) {
+      const updateData = {
+        is_active: false,
+      };
+      updateProject(projectId, updateData)
         .then(response => {
-          console.log("project deleted! ", projectId)
+          console.log("project finished! ", projectId)
           console.log("response: ", response)
           console.log("emitting reloadData with ", this.project)
           this.$emit('reloadData', this.project)
         })
         .catch(e => {
-          console.log("An error has occurred while trying to delete the project", e)
+          console.log("An error has occurred while trying to modify the project", e)
         })
     },
     newProject() {

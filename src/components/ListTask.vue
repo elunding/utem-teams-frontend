@@ -367,6 +367,12 @@ export default {
 </script>
 
 <style scoped>
+  .my-grid {
+    display: flex;
+    height: 100vh;
+    flex-flow: column;
+  }
+
   .tasks-btn {
     float: right;
   }
@@ -376,7 +382,9 @@ export default {
   }
 
   .card-group-cls {
-    min-height: 75vh;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 
   .options-cont {

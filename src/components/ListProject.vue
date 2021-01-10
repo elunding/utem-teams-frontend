@@ -12,6 +12,11 @@
         v-if="userList" :userList=userList
         @reloadData="handleReload($event, 'push')"
       />
+      <b-dropdown :text="dropdownText" class="proj-fil-dpdown">
+        <b-dropdown-item @click="dropdownText = 'Todos'">Todos</b-dropdown-item>
+        <b-dropdown-item @click="dropdownText = 'Activos'">Activos</b-dropdown-item>
+        <b-dropdown-item @click="dropdownText = 'Terminados'">Finalizados</b-dropdown-item>
+      </b-dropdown>
     </div>
     <br/>
     <div class="my-grid">
@@ -44,16 +49,16 @@
                 buttonTitle="Guardar Cambios"
                 @reloadData="handleReload($event, 'update')"
               />
-              <b-button v-b-modal="`delete-project-modal-${project.id}`" class="delete-btn" size="sm" variant="danger">
-                <b-icon icon="trash" aria-hidden="true"></b-icon> Eliminar
+              <b-button v-if="project.is_owned_by_user && project.tasks.length" v-b-modal="`delete-project-modal-${project.id}`" class="delete-btn" size="sm" variant="warning">
+                <b-icon icon="check2-circle" aria-hidden="true"></b-icon> Finalizar
               </b-button>
               <ProjectModal
                 compId="delete-project-modal"
                 :projectId="project.id"
                 mode="delete"
                 :projObj=project
-                title="Eliminar Proyecto"
-                buttonTitle="Eliminar"
+                title="Finalizar Proyecto"
+                buttonTitle="Finalizar"
                 @reloadData="handleReload($event, 'delete')"
               />
               <!--<a v-bind:href="`/projects/${project.id}/tasks`" :projectName="project.name" class="btn btn-secondary btn tasks-btn btn-sm" role="button">
@@ -91,6 +96,12 @@ export default {
   components: {
     ProjectModal
   },
+  props: {
+    dropdownText: {
+      type: String,
+      default: 'Todos'
+    },
+  },
   data() {
     return {
       perPage: 4,
@@ -105,7 +116,15 @@ export default {
       return this.projects.length
     },*/
     slicedProjects() {
-      const items = this.projects || []
+      let items = [];
+      if (this.dropdownText === 'Todos') {
+        items = this.projects || []
+      } else if (this.dropdownText === 'Activos') {
+        items = this.projects.filter(proj => proj['is_active'] === true) || []
+        // items = this.projects || []
+      } else if (this.dropdownText === 'Finalizados')
+        items = this.projects.filter(proj => proj['is_active'] === false) || []
+        // items = this.projects || []
       return items.slice((this.currentPage - 1) * this.perPage, this.currentPage * this.perPage)
     },
   },
@@ -206,6 +225,10 @@ export default {
     /* 280px is the minimum a column can get, you might need to adjust it based on your needs. */
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     grid-gap: 1.5rem;
+  }
+
+  .proj-fil-dpdown {
+    float: right;
   }
 
   /*.my-grid > * {
