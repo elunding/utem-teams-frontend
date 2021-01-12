@@ -6,6 +6,10 @@ import ProjectModal from './components/ProjectModal.vue'
 import ListProject from './components/ListProject.vue'
 import ListTask from './components/ListTask.vue'
 import TaskModal from './components/TaskModal.vue'
+import SignUp from './components/SignUp.vue'
+import waitingConfirmation from './components/waitingConfirmation.vue'
+import verify from './components/verify.vue'
+
 // import ProjectDetail from './components/ProjectDetail.vue'
 
 
@@ -18,6 +22,21 @@ export default new Router({
             path: '/login',
             name: 'login',
             component: Login
+        },
+        {
+            path: '/sign-up',
+            name: 'sign-up',
+            component: SignUp
+        },
+        {
+            path: '/wait-confirm',
+            name: 'wait-confirm',
+            component: waitingConfirmation
+        },
+        {
+            path: '/verify',
+            name: 'verify',
+            component: verify
         },
         {
             path: '/projects/new',

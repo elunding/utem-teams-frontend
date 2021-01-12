@@ -5,7 +5,7 @@
                 <div class="card-body">
                     <div class="vue-template">
                         <form action @submit.prevent="login">
-                            <h3>Bienvenido</h3>
+                            <h3>Iniciar Sesión</h3>
 
                             <div class="form-group">
                                 <label>Email</label>
@@ -20,7 +20,7 @@
                             <button type="submit" class="btn btn-dark btn-lg btn-block" value="Login">Iniciar Sesión</button>
 
                             <p class="forgot-password text-right mt-2 mb-4">
-                                <router-link to="/forgot-password">Olvidaste tu contraseña?</router-link>
+                                <router-link to="/sign-up">Registrarse</router-link>
                             </p>
                             <p v-if="error" class="error"> Contraseña o email erróneos </p>
                         </form>

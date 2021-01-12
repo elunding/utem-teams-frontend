@@ -50,7 +50,19 @@
         </b-form-textarea>-->
       </b-form-group>
 
-      <b-form-group id="input-group-3" label="Encargado" label-for="assignee-dropdown">
+      <b-form-group id="input-group-3" label="Fecha límite" label-for="due-date">
+        <b-form-datepicker 
+          id="due-date"
+          v-model="task.due_date"
+          :min="min"
+          :max="max"
+          locale="es"
+          :start-weekday=1
+        >
+        </b-form-datepicker>
+      </b-form-group>
+
+      <b-form-group id="input-group-4" label="Encargado" label-for="assignee-dropdown">
         <!--<b-form-select v-if="mode === 'post'"-->
         <b-form-select
           id="assignee-dropdown"
@@ -115,18 +127,30 @@ export default {
     }
   },
   data() {
+    const now = new Date()
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    // 15th two months prior
+    const minDate = new Date(today)
+    // 15th in two months
+    const maxDate = new Date(today)
+    maxDate.setMonth(maxDate.getMonth() + 6)
+    maxDate.setDate(15)
     return {
       task: {
         id: null,
         name: "",
         description: "",
         assignee: "",
+        due_date: "",
         priority_name: ""
       },
       selected: this.selectedAssignee,
       submitted: false,
       formValidity: null,
       projectId: this.$route.params.id,
+      value: '',
+      min: minDate,
+      max: maxDate
     };
   },
   mounted() {
@@ -185,7 +209,8 @@ export default {
         assignee: {
           // uuid: this.task.assignee
           uuid: this.selected
-        }
+        },
+        due_date: this.task.due_date
       };
       // let projectId = this.$route.params.id;
       console.log("data: ", data);
@@ -210,7 +235,8 @@ export default {
         assignee: {
           // uuid: this.task.assignee
           uuid: this.selected
-        }
+        },
+        due_date: this.task.due_date || ''
       };
       // let projectId = this.$route.params.id;
       console.log("calling updateTask...");
