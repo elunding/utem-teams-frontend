@@ -8,7 +8,6 @@
       <b-navbar-nav>
         <b-nav-item-dropdown text="Proyectos" right>
           <b-dropdown-item href="/projects">Ver Proyectos</b-dropdown-item>
-          <b-dropdown-item href="/projects/new">Crear Proyecto</b-dropdown-item>
         </b-nav-item-dropdown>
 
       </b-navbar-nav>

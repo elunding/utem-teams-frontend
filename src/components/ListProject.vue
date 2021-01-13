@@ -15,7 +15,8 @@
       <b-dropdown :text="dropdownText" class="proj-fil-dpdown">
         <b-dropdown-item @click="dropdownText = 'Todos'">Todos</b-dropdown-item>
         <b-dropdown-item @click="dropdownText = 'Activos'">Activos</b-dropdown-item>
-        <b-dropdown-item @click="dropdownText = 'Terminados'">Finalizados</b-dropdown-item>
+        <b-dropdown-item @click="dropdownText = 'Finalizados'">Finalizados</b-dropdown-item>
+        <b-dropdown-item @click="dropdownText = 'Creados por mí'">Creados por mí</b-dropdown-item>
       </b-dropdown>
     </div>
     <br/>
@@ -24,7 +25,9 @@
         <h3 class="display-6">No hay proyectos existentes</h3>
       </div>
       <!--<b-card-group v-else v-for="(project, index) in projects" :key="index" v-bind="slicedProjects">-->
-      <b-card-group v-else v-for="(project, index) in slicedProjects" :key="index">
+      <!--<b-card-group v-else v-for="(project, index) in slicedProjects" :key="index">-->
+      <!--<b-card-group v-else v-for="project in slicedProjects" :key="project.id">-->
+      <b-card-group v-else-if="renderProjects" v-for="project in slicedProjects" :key="project.id">
           <b-card 
             class="proj-card"
             :title="project.name"
@@ -104,11 +107,12 @@ export default {
   },
   data() {
     return {
-      perPage: 4,
+      perPage: 6,
       currentPage: 1,
       projects: [],
       userList: [],
       projectsAmount: 0,
+      renderProjects: true,
     }
   },
   computed: {
@@ -122,12 +126,26 @@ export default {
       } else if (this.dropdownText === 'Activos') {
         items = this.projects.filter(proj => proj['is_active'] === true) || []
         // items = this.projects || []
-      } else if (this.dropdownText === 'Finalizados')
+      } else if (this.dropdownText === 'Finalizados') {
         items = this.projects.filter(proj => proj['is_active'] === false) || []
+      } else if (this.dropdownText === 'Creados por mí') {
+        items = this.projects.filter(proj => proj['is_owned_by_user'] === true) || []
         // items = this.projects || []
+      }
       return items.slice((this.currentPage - 1) * this.perPage, this.currentPage * this.perPage)
     },
   },
+  /*watch: {
+    slicedProjects: {
+      immediate: true,
+      deep: true,
+      handler(slicedProjects) {
+        // console.log(`new project added to slicedProjects: ${newVal}`);
+        console.log("new project added to slicedProjects: ");
+        console.log(slicedProjects)
+      }
+    }
+  },*/
   methods: {
     handleReload(project, mode) {
       console.log("on handleReload...")
@@ -145,6 +163,12 @@ export default {
         const index = this.projects.indexOf(project)
         this.projects.splice(index, 1)
       }
+
+      this.renderProjects = false;
+
+      this.$nextTick(() => {
+        this.renderProjects = true;
+      })
     },
     getProjectsAmount() {
       this.projectsAmount = this.projects.length
@@ -200,7 +224,7 @@ export default {
   }
 
   .proj-description {
-    margin-bottom: 40px;
+    margin-bottom: 50px;
   }
 
   .edit-btn {

@@ -34,8 +34,17 @@
               <!--<b-card-text class="task-description">
                 {{ task.description }}
               </b-card-text>-->
+              <br>
               <b-card-text class="task-assignee">
+                <b-icon icon="person-circle">
+                </b-icon>
                 Encargado: {{ task.assignee.full_name }}
+              </b-card-text>
+              <b-card-text>
+                <b-icon icon="calendar-date">
+                  
+                </b-icon>
+                Fecha límite: {{ task.due_date }}
               </b-card-text>
               <br>
               <div class="options-cont">
@@ -95,8 +104,17 @@
               <!--<b-card-text class="task-description">
                 {{ task.description }}
               </b-card-text>-->
+              <br>
               <b-card-text class="task-assignee">
+                <b-icon icon="person-circle">
+                </b-icon>
                 Encargado: {{ task.assignee.full_name }}
+              </b-card-text>
+              <b-card-text>
+                <b-icon icon="calendar-date">
+                  
+                </b-icon>
+                Fecha límite: {{ task.due_date }}
               </b-card-text>
               <br>
               <div class="options-cont">
@@ -155,8 +173,17 @@
               <!--<b-card-text class="task-description">
                 {{ task.description }}
               </b-card-text>-->
+              <br>
               <b-card-text class="task-assignee">
+                <b-icon icon="person-circle">
+                </b-icon>
                 Encargado: {{ task.assignee.full_name }}
+              </b-card-text>
+              <b-card-text>
+                <b-icon icon="calendar-date">
+                  
+                </b-icon>
+                Fecha límite: {{ task.due_date }}
               </b-card-text>
               <br>
               <div class="options-cont">
