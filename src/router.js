@@ -2,7 +2,15 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import Login from './components/Login.vue'
-import AddProject from './components/AddProject.vue'
+import ProjectModal from './components/ProjectModal.vue'
+import ListProject from './components/ListProject.vue'
+import ListTask from './components/ListTask.vue'
+import TaskModal from './components/TaskModal.vue'
+import SignUp from './components/SignUp.vue'
+import waitingConfirmation from './components/waitingConfirmation.vue'
+import verify from './components/verify.vue'
+
+// import ProjectDetail from './components/ProjectDetail.vue'
 
 
 Vue.use(Router);
@@ -16,30 +24,48 @@ export default new Router({
             component: Login
         },
         {
+            path: '/sign-up',
+            name: 'sign-up',
+            component: SignUp
+        },
+        {
+            path: '/wait-confirm',
+            name: 'wait-confirm',
+            component: waitingConfirmation
+        },
+        {
+            path: '/verify',
+            name: 'verify',
+            component: verify
+        },
+        {
             path: '/projects/new',
             name: 'projects-new',
-            component: AddProject
-        }
-        /*
+            component: ProjectModal
+        },
         {
             path: '/',
             alias: '/projects',
             name: 'projects',
-            component: () => import ('') // component route
+            component: ListProject
         },
         {
-            path: '/projects/new',
-            // alias: '/projects',
-            name: 'projects-new',
-            component: () => import ('') // component route
+            path: '/projects/:id/tasks',
+            name: 'tasks',
+            component: ListTask,
+            props: true
         },
         {
+            path: '/projects/:id/tasks/new',
+            name: 'tasks-new',
+            component: TaskModal
+        },
+        /*{
             path: '/projects/:id',
-            // alias: '/projects',
             name: 'projects-details',
-            component: () => import ('') // component route
-        },
-        {
+            component: ProjectDetail
+        },*/
+        /*{
             path: '/projects/:id/tasks',
             // alias: '/tasks',
             name: 'tasks',
