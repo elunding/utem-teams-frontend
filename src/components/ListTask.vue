@@ -3,7 +3,7 @@
     <h3> Tareas: {{ projectName }} </h3>
     <br/>
     <div class="button-area">
-      <b-button v-b-modal="`add-task-modal-${0}`" variant="primary">
+      <b-button v-if="projectStatus" v-b-modal="`add-task-modal-${0}`" variant="primary">
         <b-icon icon="plus-circle" aria-hidden="true"></b-icon> Añadir tarea
       </b-button>
       <TaskModal
@@ -256,7 +256,8 @@ export default {
       doneTasks: [],
       tasksExists: false,
       projectId: this.$route.params.id,
-      // projectName: '',
+      projectName: '',
+      projectStatus: '',
       assigneeList: []
     };
   },
@@ -306,6 +307,7 @@ export default {
             this.doneTasks
           ));
           this.projectName = response.data.data.project_name;
+          this.projectStatus = response.data.data.project_status;
           console.log(response.data.data);
         })
         .catch(e => {

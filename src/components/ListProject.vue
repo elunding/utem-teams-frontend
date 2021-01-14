@@ -52,7 +52,7 @@
                 buttonTitle="Guardar Cambios"
                 @reloadData="handleReload($event, 'update')"
               />
-              <b-button v-if="project.is_owned_by_user && project.tasks.length" v-b-modal="`delete-project-modal-${project.id}`" class="delete-btn" size="sm" variant="warning">
+              <b-button v-if="project.is_owned_by_user && project.tasks.length && project.is_active" v-b-modal="`delete-project-modal-${project.id}`" class="delete-btn" size="sm" variant="warning">
                 <b-icon icon="check2-circle" aria-hidden="true"></b-icon> Finalizar
               </b-button>
               <ProjectModal
