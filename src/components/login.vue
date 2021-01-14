@@ -48,7 +48,8 @@
                 try {
                     console.log("calling UserAuthService with " + this.email + " and " + this.password);
                     await UserAuthService.login(this.email, this.password);
-                    this.$router.push('/');
+                    // this.$router.push('/');
+                    this.$router.push(this.$route.query.redirect || '/')
                 } catch (error) {
                     console.log('error: ', error);
                     this.error = true;

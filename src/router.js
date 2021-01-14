@@ -9,19 +9,24 @@ import TaskModal from './components/TaskModal.vue'
 import SignUp from './components/SignUp.vue'
 import waitingConfirmation from './components/waitingConfirmation.vue'
 import verify from './components/verify.vue'
-
+import InviteConfirmation from './components/InviteConfirmation.vue'
 // import ProjectDetail from './components/ProjectDetail.vue'
+
+import UserAuthService from './api/authentication.service'
 
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
     mode: 'history',
     routes: [
         {
             path: '/login',
             name: 'login',
-            component: Login
+            component: Login,
+            meta: {
+                allowAnonymous: true
+            }
         },
         {
             path: '/sign-up',
@@ -60,29 +65,54 @@ export default new Router({
             name: 'tasks-new',
             component: TaskModal
         },
-        /*{
-            path: '/projects/:id',
-            name: 'projects-details',
-            component: ProjectDetail
-        },*/
-        /*{
-            path: '/projects/:id/tasks',
-            // alias: '/tasks',
-            name: 'tasks',
-            component: () => import ('') // component route
-        },
         {
-            path: '/projects/:id/tasks/new',
-            // alias: '/tasks',
-            name: 'tasks-new',
-            component: () => import ('') // component route
-        },
-        {
-            path: '/projects/:id/tasks/:id',
-            // alias: '/tasks',
-            name: 'tasks-details',
-            component: () => import ('') // component route
+            path: '/join_project',
+            name: 'join-project',
+            component: InviteConfirmation,
         }
-        */
     ]
 });
+
+router.beforeEach((to, from, next) => {
+    console.log("to: ", to.fullPath)
+    console.log("from: ", from)
+    console.log("next: ", next)
+    console.log("to.name: ", to.name)
+    console.log("isLoggedIn: ", UserAuthService.isLoggedIn())
+    /*if (!to.meta.allowAnonymous && !UserAuthService.isLoggedIn()) {
+        console.log("in if")
+        next({
+          path: '/login',
+          query: { redirect: to.fullPath }
+        })
+    } else {
+        console.log("in else")
+        next()
+    }*/
+    if (to.name == 'login' && UserAuthService.isLoggedIn()) {
+        console.log("in first if")
+        next({ path: '/' })
+    } else if (!to.meta.allowAnonymous && !UserAuthService.isLoggedIn()) {
+        console.log("in else if")
+        console.log("to.fullPath: ", to.fullPath)
+        next({
+            path: '/login',
+            query: { redirect: to.fullPath }
+        })
+    } else {
+        console.log("in else")
+        next()
+    }
+    /*console.log("to.name: ", to.name)
+    console.log("isLoggedIn: ", UserAuthService.isLoggedIn())*/
+    /*if (to.name !== 'login' && !UserAuthService.isLoggedIn()) {
+        console.log("in if...")
+        next({name: 'login'})
+    } else {
+        console.log("in else...")
+        next()
+    }*/
+
+  })
+  
+  export default router

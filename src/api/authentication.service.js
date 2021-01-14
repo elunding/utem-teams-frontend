@@ -1,3 +1,4 @@
+import decode from 'jwt-decode'
 import axios from 'axios'
 
 const API_AUTH_ENDPOINT = 'token/';
@@ -37,10 +38,6 @@ class UserAuthService {
         }
     }
 
-    logout() {
-        localStorage.removeItem('token');
-    }
-
     async verifyAccount(accessToken) {
         console.log("making request to validate new account...")
         console.log("making request to: ", process.env.VUE_APP_BASE_URL + API_VERIFY_ENDPOINT);
@@ -51,6 +48,53 @@ class UserAuthService {
             console.log("verification successfull!")
         }
     }
+
+    logout() {
+        axios.defaults.headers.common['Authorization'] = ''
+        localStorage.removeItem('token');
+    }
+
+    isLoggedIn() {
+        const authToken = this.getAuthToken()
+
+        console.log("token: ", authToken)
+
+        console.log("bool(authToken: ", !!authToken)
+        
+        if (authToken) {
+            return !this.isTokenExpired(authToken)
+        }
+
+        return false
+    }
+
+    getAuthToken() {
+        return localStorage.getItem('token')
+    }
+
+    getTokenExpirationDate(encodedToken) {
+        const decodedToken = decode(encodedToken)
+
+        if (!decodedToken.exp) {
+            return null
+        }
+
+        let date = new Date(0)
+        date.setUTCSeconds(decodedToken.exp)
+
+        return date
+    }
+
+    isTokenExpired(authToken) {
+        // const token = this.getAuthToken()
+        const expirationDate = this.getTokenExpirationDate(authToken)
+        
+        console.log("token: ", authToken)
+        console.log("expiration date: ", expirationDate)
+
+        return expirationDate < new Date()
+    }
+
 }
 
 export default new UserAuthService();

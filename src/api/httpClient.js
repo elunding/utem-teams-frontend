@@ -16,11 +16,15 @@ const authTokenInterceptor = (config) => {
     return config;
 }
 
+/*if (getAuthToken === undefined) {
+    this.$router.push('/login');
+}*/
+
 httpClient.interceptors.request.use(authTokenInterceptor);
 
 /*httpClient.interceptors.response.use(undefined, function(e) {
-    return new Promise(function (resolve, reject) {
-        if (e.status === 401 && e.config && !e.config.__isRetryRequest) {
+    return new Promise(function () {
+        if (e.status === 401 || e.config || !e.config.__isRetryRequest || getAuthToken === undefined) {
             this.$router.push('/login');
         }
         throw e;

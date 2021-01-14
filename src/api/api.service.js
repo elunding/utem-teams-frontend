@@ -17,6 +17,8 @@ const deleteTask = (projectId, taskId) => httpClient.delete(`${PROJECTS_ENDPOINT
 const updateProject = (projectId, data) => httpClient.patch(`${PROJECTS_ENDPOINT}${projectId}/`, data);
 /*const deleteProject = (projectId) => httpClient.delete(`${PROJECTS_ENDPOINT}${projectId}/`);*/
 const getUserDetails = () => httpClient.get('user/detail/');
+const getInvitationDetails = (invitationId) => httpClient.get(`/invitation/${invitationId}/`)
+const confirmInvitation = (invitationId, confirmation) => httpClient.post(`/invitation/${invitationId}/confirm/`, confirmation)
 
 
 export {
@@ -33,5 +35,7 @@ export {
     deleteTask,
     updateProject,
     // deleteProject,
-    getUserDetails
+    getUserDetails,
+    getInvitationDetails,
+    confirmInvitation,
 }
