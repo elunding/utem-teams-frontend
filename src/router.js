@@ -31,17 +31,26 @@ const router = new Router({
         {
             path: '/sign-up',
             name: 'sign-up',
-            component: SignUp
+            component: SignUp,
+            meta: {
+                allowAnonymous: true
+            }
         },
         {
             path: '/wait-confirm',
             name: 'wait-confirm',
-            component: waitingConfirmation
+            component: waitingConfirmation,
+            meta: {
+                allowAnonymous: true
+            }
         },
         {
             path: '/verify',
             name: 'verify',
-            component: verify
+            component: verify,
+            meta: {
+                allowAnonymous: true
+            }
         },
         {
             path: '/projects/new',
@@ -79,16 +88,7 @@ router.beforeEach((to, from, next) => {
     console.log("next: ", next)
     console.log("to.name: ", to.name)
     console.log("isLoggedIn: ", UserAuthService.isLoggedIn())
-    /*if (!to.meta.allowAnonymous && !UserAuthService.isLoggedIn()) {
-        console.log("in if")
-        next({
-          path: '/login',
-          query: { redirect: to.fullPath }
-        })
-    } else {
-        console.log("in else")
-        next()
-    }*/
+    
     if (to.name == 'login' && UserAuthService.isLoggedIn()) {
         console.log("in first if")
         next({ path: '/' })
@@ -103,15 +103,6 @@ router.beforeEach((to, from, next) => {
         console.log("in else")
         next()
     }
-    /*console.log("to.name: ", to.name)
-    console.log("isLoggedIn: ", UserAuthService.isLoggedIn())*/
-    /*if (to.name !== 'login' && !UserAuthService.isLoggedIn()) {
-        console.log("in if...")
-        next({name: 'login'})
-    } else {
-        console.log("in else...")
-        next()
-    }*/
 
   })
   

@@ -38,7 +38,7 @@
             </b-card-text>
             <div class="options-cont">
               <!--<b-button class="details-btn" id="proj-details-btn" variant="primary">Ver detalles</b-button>-->
-              <b-button v-b-modal="`edit-project-modal-${project.id}`" size="sm" class="edit-btn" variant="primary">
+              <b-button v-if="project.is_owned_by_user" v-b-modal="`edit-project-modal-${project.id}`" size="sm" class="edit-btn" variant="primary">
                 <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Editar
               </b-button>
               <!--<ProjectModal compId="edit-project-modal" :projectId="project.id" v-if="userList" :userList=userList mode="patch" :projObj=project title="Detalles Proyecto" buttonTitle="Guardar Cambios" :preselectedMembers=project.project_members  v-on:reloadData="handleReload"/>-->
