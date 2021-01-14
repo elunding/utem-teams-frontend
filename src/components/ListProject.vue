@@ -33,6 +33,22 @@
             :title="project.name"
             style="max-width: 23rem; margin-bottom: 20px;"
           >
+          <br>
+          <b-button v-b-toggle="`collapse-${project.id}`" size="sm" variant="info">
+            <b-icon icon="people" aria-hidden="true"></b-icon> Integrantes
+          </b-button>
+          <b-collapse :id="`collapse-${project.id}`" class="mt-2">
+
+           <b-list-group v-for="member in project.project_members" :key="member.id">
+            <b-list-group-item>{{ member.full_name }}</b-list-group-item>
+            </b-list-group>
+          </b-collapse>
+            <br>
+            <!--<p>Integrantes</p>
+            <ul v-for="member in project.project_members" :key="member.id">
+              <li>{{ member.full_name }}</li>
+            </ul>-->
+            <br>
             <b-card-text class="proj-description">
               {{ project.description }}
             </b-card-text>
